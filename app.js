@@ -19,11 +19,11 @@ $(function() {
     $newAr.find('.arTitle').html(this.title);
 
     if (timeStamp === 1) {
-      $newAr.find('.byLine').html('By ' + '<span>' + this.author + '</span>' + ' published ' + timeStamp + ' day ago');
+      $newAr.find('.byLine').html('By ' + "<a href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published ' + timeStamp + ' day ago');
     } else if (timeStamp === 0) {
-      $newAr.find('.byLine').html('By ' + '<span>' + this.author + '</span>' + ' published today');
+      $newAr.find('.byLine').html('By ' + "<a href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published today');
     } else {
-      $newAr.find('.byLine').html('By ' + '<span>' + this.author + '</span>' + ' published ' + timeStamp + ' days ago');
+      $newAr.find('.byLine').html('By ' + "<a href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published ' + timeStamp + ' days ago');
     }
     $newAr.find('.arBody').html(this.body);
     $newAr.append('<br />' + '<hr>' + '<br />');

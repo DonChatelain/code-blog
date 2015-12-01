@@ -5,7 +5,8 @@ nav li{
 img {
   display: inline;
   float: left;
-  margin: 7px;
+  margin: 10px;
+  max-width: 300px;
 }
 
 span {

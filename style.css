@@ -1,0 +1,13 @@
+nav li{
+  display: inline;
+}
+
+img {
+  display: inline;
+  float: left;
+  margin: 7px;
+}
+
+span {
+  font-style: italic;
+}

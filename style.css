@@ -12,3 +12,15 @@ img {
 span {
   font-style: italic;
 }
+
+.arTemplate {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+option {
+  color: black;
+}

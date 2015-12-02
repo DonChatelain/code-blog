@@ -16,10 +16,23 @@
     </header>
     <nav>
       <ul>
-        <li><a href="#">About</a></li>
+        <li><a id="aboutTab" href="#">About</a></li>
         <li><a href="https://github.com/DonChatelain">GitHub</a></li>
         <li><a href="https://www.linkedin.com/in/dj-chatelain-01325140">LinkedIn</a></li>
       </ul>
+      <section id="aboutMe" class="hidden">
+        <h3>About Me</h3>
+        <p>Hey there! This is a little blurb about myself and my endevears to create this blog. Only took me a day or so to get it off the ground and looking alright but I will continue to work on it for weeks to come- adding new functionality and all kinds of cool stuff to it! Hope you enjoy!</p>
+        <p id="signature">-Don</p>
+      </section>
+      <form id="catFilter">
+        <p>Filter by Category</p>
+        <select id="catSelect"></select>
+      </form>
+      <form id="authFilter">
+        <p>Filter by Author</p>
+        <select id="authSelect"></select>
+      </form>
     </nav>
     <hr>
     <section id="articles">
@@ -27,12 +40,15 @@
         <header>
           <h3 class="arTitle"></h3>
           <div class="byLine"></div>
+          <div class="catLine"></div>
         </header>
         <section class="arBody"></section>
+        <button class="showMore">Read On</button>
       </article>
     </section>
 
     </main>
+    <script src="util.js"></script>
     <script src="blogArticles.js"></script>
     <script src="app.js"></script>
   </body>

@@ -7,8 +7,7 @@
 $(function() {
 
   var articleArray = [];
-  // var inputArray = [];
-  var outputArray = [];
+
 
 //Constructor to receive ext. data objects
   function MakeAr(num) {
@@ -83,28 +82,20 @@ $(function() {
       articleArray[i].toHtml();
     }
   }
-
-
-
-  // function getUnique(inputArray){
-  //   // console.log(inputArray[2].category);
-  //   for (i=0; i < inputArray.length; i++){
-  //     if ($.inArray(inputArray[i], inputArray) == -1) {
-  //       outputArray.push(inputArray[i]);
-  //     }
-  //   }
-  //   return outputArray;
-  // }
-
-
-
 //populate both filter dropdown menus
   function popFilters() {
-    $('#catSelect').append('<option>All</option')
+    var tempCatArray = [];
+    var uniqueCatArray = [];
+
     articleArray.sort(byCategory);
-    // getUnique();
+    $('#catSelect').append('<option>All</option');
     for (var i = 0; i < articleArray.length; i++) {
-      $('#catFilter').find('select').append('<option value="' + articleArray[i].category + '">' + articleArray[i].category + '</option>');
+      tempCatArray[i] = articleArray[i].category;
+    }
+    uniqueCatArray = jQuery.unique(tempCatArray);
+
+    for (var i = 0; i < uniqueCatArray.length; i++) {
+      $('#catFilter').find('select').append('<option value="' + uniqueCatArray[i] + '">' + uniqueCatArray[i] + '</option>');
     }
     articleArray.sort(byAuthor);
     $('#authSelect').append('<option>All</option')
@@ -132,7 +123,13 @@ $(function() {
 //about me tab
   $('#aboutTab').on('click', function(e) {
     e.preventDefault();
-    $('#aboutMe').toggleClass('hidden');
+    if ($('#aboutMe').is(':hidden')) {
+      $('#aboutMe').slideDown('fast');
+    }
+    else {
+      $('#aboutMe').slideUp('fast');
+    }
+
   });
 //category filter
   $('#catSelect').on('change', function(e) {

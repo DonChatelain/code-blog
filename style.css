@@ -1,12 +1,7 @@
-nav li{
-  display: inline;
-}
-
-img {
-  display: inline;
-  float: left;
-  margin: 10px;
-  max-width: 300px;
+main {
+  background-color: #fff;
+  border-left: 20px solid #f8f8f8;
+  border-right: 80px solid #f8f8f8;
 }
 
 h1 {
@@ -17,32 +12,46 @@ h1 {
   margin-top: 7px;
 }
 
-li a {
+#aboutMe {
+  display: none;
   border: 1px solid black;
-  padding: 10px;
+  padding: 20px;
+  margin: 20px auto;
+}
+
+nav li{
+  display: inline-block;
+  margin: 10px;
+  width: 80px;
+}
+
+li a {
+  margin: 10px;
+  border: 1px solid black;
+  padding: 20px;
   text-decoration: none;
 }
 
-
-span {
-  font-style: italic;
+#catFilter p{
+  display: inline;
+}
+#catSelect , #authFilter p {
+  margin-bottom: -20px;
+  display: inline;
+}
+#authSelect {
+  margin-top: -40px;
 }
 
 .arTemplate {
   display: none;
 }
 
-.hidden {
-  display: none;
+span {
+  font-style: italic;
 }
 
-option {
-  color: black;
-}
-
-#catFilter p{
-  display: inline;
-}
+article,
 
 button {
   color: #1EAEDB;
@@ -53,23 +62,15 @@ button:hover {
   border-color: #1EAEDB;
 }
 
-#aboutMe {
-  display: none;
-  border: 1px solid black;
-  padding: 20px;
-  margin: 20px auto;
-}
-
-#catSelect , #authFilter p {
-  margin-bottom: -20px;
+img {
   display: inline;
+  float: left;
+  margin: 10px;
+  max-width: 250px;
 }
 
-#authSelect {
-  margin-top: -40px;
-}
 
-#colorBarL, #colorBarR {
+/*#colorBarL, #colorBarR {
   height: 140%;
   position: fixed;
   top: 0px;
@@ -82,4 +83,4 @@ button:hover {
   width: 20px;
   background-color: #f6f8f8;
   left: 4%;
-}
+}*/

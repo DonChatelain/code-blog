@@ -9,6 +9,21 @@ img {
   max-width: 300px;
 }
 
+h1 {
+  width: 140px;
+  border: 2px solid black;
+  text-align: right;
+  padding: 0 15px 10px 0;
+  margin-top: 7px;
+}
+
+li a {
+  border: 1px solid black;
+  padding: 10px;
+  text-decoration: none;
+}
+
+
 span {
   font-style: italic;
 }
@@ -23,4 +38,42 @@ span {
 
 option {
   color: black;
+}
+
+#catFilter p{
+  display: inline;
+}
+
+button {
+  color: #1EAEDB;
+  border-color: #000;
+}
+button:hover {
+  color: #0FA0CE;
+  border-color: #1EAEDB;
+}
+
+
+#catSelect , #authFilter p {
+  margin-bottom: -20px;
+  display: inline;
+}
+
+#authSelect {
+  margin-top: -40px;
+}
+
+#colorBarL, #colorBarR {
+  height: 140%;
+  position: fixed;
+  top: 0px;
+  z-index: -1;
+}#colorBarR {
+  width: 80px;
+  background-color: #f6f8f8;
+  right: 4%;
+}#colorBarL {
+  width: 20px;
+  background-color: #f6f8f8;
+  left: 4%;
 }

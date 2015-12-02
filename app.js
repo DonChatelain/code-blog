@@ -1,7 +1,16 @@
+//888888888888888888888888888
+//  Code by Don Chatelain //
+//          Blog Mockup  //
+//             CF301    //
+//888888888888888888888//
+
 $(function() {
 
   var articleArray = [];
+  // var inputArray = [];
+  var outputArray = [];
 
+//Constructor to receive ext. data objects
   function MakeAr(num) {
     this.num = num;
     this.title = blog.rawData[num].title;
@@ -11,7 +20,7 @@ $(function() {
     this.publishedOn = blog.rawData[num].publishedOn;
     this.body = blog.rawData[num].body;
   };
-
+//DOM cloning + populating
   MakeAr.prototype.toHtml = function() {
 
     var $section = $('#articles');
@@ -75,9 +84,25 @@ $(function() {
     }
   }
 
+
+
+  // function getUnique(inputArray){
+  //   // console.log(inputArray[2].category);
+  //   for (i=0; i < inputArray.length; i++){
+  //     if ($.inArray(inputArray[i], inputArray) == -1) {
+  //       outputArray.push(inputArray[i]);
+  //     }
+  //   }
+  //   return outputArray;
+  // }
+
+
+
+//populate both filter dropdown menus
   function popFilters() {
     $('#catSelect').append('<option>All</option')
     articleArray.sort(byCategory);
+    // getUnique();
     for (var i = 0; i < articleArray.length; i++) {
       $('#catFilter').find('select').append('<option value="' + articleArray[i].category + '">' + articleArray[i].category + '</option>');
     }
@@ -86,7 +111,6 @@ $(function() {
     for (var i = 0; i < articleArray.length; i++) {
       $('#authFilter').find('select').append('<option value="' + articleArray[i].author + '">' + articleArray[i].author + '</option>');
     }
-
   }
 
   //-----------Executives----------------
@@ -94,9 +118,8 @@ $(function() {
   popAllArticles();
   popFilters();
 
-
 //-------------Event Handling--------------
-
+//readon button
   $('.showMore').on('click', function() {
     if ($(this).text() === 'Read On') {
       $(this).prev().find('p:not(:first)').toggle();
@@ -106,12 +129,12 @@ $(function() {
       $(this).text('Read On');
     }
   });
-
+//about me tab
   $('#aboutTab').on('click', function(e) {
     e.preventDefault();
     $('#aboutMe').toggleClass('hidden');
   });
-
+//category filter
   $('#catSelect').on('change', function(e) {
     e.preventDefault();
     var sel = $('#catFilter :selected').val();
@@ -121,8 +144,9 @@ $(function() {
     if (sel == 'All') {
       $('article:not(:first)').show();
     }
+    // sel = 'All';
   });
-
+//author filter
   $('#authSelect').on('change', function(e) {
     e.preventDefault();
     var sel = $('#authFilter :selected').val();
@@ -132,9 +156,9 @@ $(function() {
     if (sel == 'All') {
       $('article:not(:first)').show();
     }
+    // $('#authFilter : selected').val() = 'All';
   });
 
-  // console.log($('.catLine').text());
 
 });
 

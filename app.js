@@ -35,7 +35,7 @@ $(function() {
     } else {
       $newAr.find('.byLine').html('By ' + "<a class='authLine' href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published ' + timeStamp + ' days ago');
     }
-    $newAr.find('.catLine').html('Category: ' + this.cateory);
+    $newAr.find('.catLine').html('Category: ' + this.category);
     $newAr.find('.arBody').html(this.body);
     $newAr.find('.arBody p').hide();
     $newAr.find('.arBody p:first-child').show();
@@ -135,8 +135,8 @@ $(function() {
   });
 //category filter
   $('#catSelect').on('change', function(e) {
-    e.preventDefault();
-    var sel = $('#catFilter :selected').val();
+    // e.preventDefault();
+    var sel = $(this).val();
     console.log(sel);
     $('article:not(:first)').hide();
     $(".catLine:contains('" + sel + "')").parents('article').show();

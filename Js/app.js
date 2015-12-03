@@ -18,7 +18,7 @@ $(function() {
     this.authorUrl = blog.rawData[num].authorUrl;
     this.publishedOn = blog.rawData[num].publishedOn;
     this.body = blog.rawData[num].body;
-  };
+  }
 //DOM cloning + populating
   MakeAr.prototype.toHtml = function() {
 
@@ -42,7 +42,7 @@ $(function() {
 
     $newAr.append('<br />' + '<br />' + '<br />' + '<br />' + '<hr>' + '<br />');
 
-    $newAr.appendTo($section)
+    $newAr.appendTo($section);
   };
 
 //--------Sorting Options------------------------
@@ -94,12 +94,12 @@ $(function() {
     }
     uniqueCatArray = jQuery.unique(tempCatArray);
 
-    for (var i = 0; i < uniqueCatArray.length; i++) {
+    for (i = 0; i < uniqueCatArray.length; i++) {
       $('#catFilter').find('select').append('<option value="' + uniqueCatArray[i] + '">' + uniqueCatArray[i] + '</option>');
     }
     articleArray.sort(byAuthor);
-    $('#authSelect').append('<option>All</option')
-    for (var i = 0; i < articleArray.length; i++) {
+    $('#authSelect').append('<option>All</option');
+    for (i = 0; i < articleArray.length; i++) {
       $('#authFilter').find('select').append('<option value="' + articleArray[i].author + '">' + articleArray[i].author + '</option>');
     }
   }

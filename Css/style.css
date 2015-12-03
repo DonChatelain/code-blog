@@ -1,6 +1,3 @@
-* {
-  font-size: ;
-}
 main {
   background-color: #fff;
   /*border-left: 20px solid #f8f8f8;*/
@@ -83,16 +80,13 @@ article header {
 }
 
 .byLine {
-  font-size: ;
   padding-left: 30px;
 }
 
 .authLine {
-  font-size: ;
   text-decoration: none;
 }
 .catLine {
-  font-size: ;
   padding-left: 30px;
   padding-bottom: 20px;
 }
@@ -120,13 +114,13 @@ img {
   margin: 10px;
   max-width: 250px;
 }
-img.pull-left{
+.pull-left{
   float: left;
   padding-top: 10px;
   padding-right: 10px;
   clear:left;
 }
-img.pull-right{
+.pull-right{
   float: right;
   padding-top: 10px;
   padding-left: 10px;

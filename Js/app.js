@@ -88,7 +88,7 @@ $(function() {
     var uniqueCatArray = [];
 
     articleArray.sort(byCategory);
-    $('#catSelect').append('<option>All</option');
+    $('#catSelect').append('<option value="All">-Filter by Category-</option');
     for (var i = 0; i < articleArray.length; i++) {
       tempCatArray[i] = articleArray[i].category;
     }
@@ -98,7 +98,7 @@ $(function() {
       $('#catFilter').find('select').append('<option value="' + uniqueCatArray[i] + '">' + uniqueCatArray[i] + '</option>');
     }
     articleArray.sort(byAuthor);
-    $('#authSelect').append('<option>All</option');
+    $('#authSelect').append('<option value="All">-Filter by Author-</option');
     for (i = 0; i < articleArray.length; i++) {
       $('#authFilter').find('select').append('<option value="' + articleArray[i].author + '">' + articleArray[i].author + '</option>');
     }

@@ -1,13 +1,11 @@
 main {
   background-color: #fff;
-  /*border-left: 20px solid #f8f8f8;*/
-  /*border-right: 80px solid #f8f8f8;*/
   padding: 35px;
 }
 
 h1 {
   font-size: 3.5em;
-  margin: 0px auto;
+  margin: 0 auto;
   width: 140px;
   border: 2px solid black;
   text-align: left;
@@ -40,7 +38,9 @@ nav li{
   border: 1px solid black;
   border-radius: 4px;
   text-align: center;
-
+}
+nav li:hover {
+  border: 1px solid #1EAEDB;
 }
 
 li a {
@@ -48,22 +48,15 @@ li a {
   text-align: center;
   text-decoration: none;
 }
-
 #filters {
-  text-align: right;
-  margin-right: 20%;
+  text-align: center;
+  margin-top: 50px;
 }
-
-form p{
-  display: inline;
-  font-size: 1.5em;
-}
-
 .filter {
   font-size: 1.5em;
   height: 50px;
-  width: 50%;
-  margin-left: 10px;
+  width: 90%;
+  margin: 0 auto;
 }
 
 .arTemplate {
@@ -99,11 +92,11 @@ button {
   color: #1EAEDB;
   border-color: #000;
   width: 175px;
-  height: 100px;
+  height: 80px;
   padding: 0;
   float: right;
   margin-right: 15%;
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 button:hover {
   color: #0FA0CE;
@@ -144,23 +137,10 @@ img {
   li a {
     font-size: 1.8em;
   }
-  #filters {
-    text-align: right;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 90px;
-  }
-
-  form p{
-    display: inline;
-    font-size: 1.5em;
-  }
-
   .filter {
-    font-size: 1.5em;
-    height: 50px;
+    font-size: 1.2em;
+    height: 40px;
     width: 40%;
-    margin-left: 10px;
   }
   main {
     padding: 80px;
@@ -168,12 +148,12 @@ img {
   button {
     color: #1EAEDB;
     border-color: #000;
-    width: 150px;
-    height: 60px;
+    width: 120px;
+    height: 40px;
     padding: 0;
     float: right;
     margin-right: 15%;
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: normal;
   }
   .arTitle {

@@ -7,8 +7,7 @@
 $(function() {
 
   var articleArray = [];
-  // var inputArray = [];
-  var outputArray = [];
+
 
 //Constructor to receive ext. data objects
   function MakeAr(num) {
@@ -39,9 +38,9 @@ $(function() {
     $newAr.find('.catLine').html('Category: ' + this.category);
     $newAr.find('.arBody').html(this.body);
     $newAr.find('.arBody p').hide();
-    $newAr.find('.arBody p:first').show();
+    $newAr.find('.arBody p:first-child').show();
 
-    $newAr.append('<br />' + '<hr>' + '<br />');
+    $newAr.append('<br />' + '<br />' + '<br />' + '<br />' + '<hr>' + '<br />');
 
     $newAr.appendTo($section)
   };
@@ -83,28 +82,20 @@ $(function() {
       articleArray[i].toHtml();
     }
   }
-
-
-
-  // function getUnique(inputArray){
-  //   // console.log(inputArray[2].category);
-  //   for (i=0; i < inputArray.length; i++){
-  //     if ($.inArray(inputArray[i], inputArray) == -1) {
-  //       outputArray.push(inputArray[i]);
-  //     }
-  //   }
-  //   return outputArray;
-  // }
-
-
-
 //populate both filter dropdown menus
   function popFilters() {
-    $('#catSelect').append('<option>All</option')
+    var tempCatArray = [];
+    var uniqueCatArray = [];
+
     articleArray.sort(byCategory);
-    // getUnique();
+    $('#catSelect').append('<option>All</option');
     for (var i = 0; i < articleArray.length; i++) {
-      $('#catFilter').find('select').append('<option value="' + articleArray[i].category + '">' + articleArray[i].category + '</option>');
+      tempCatArray[i] = articleArray[i].category;
+    }
+    uniqueCatArray = jQuery.unique(tempCatArray);
+
+    for (var i = 0; i < uniqueCatArray.length; i++) {
+      $('#catFilter').find('select').append('<option value="' + uniqueCatArray[i] + '">' + uniqueCatArray[i] + '</option>');
     }
     articleArray.sort(byAuthor);
     $('#authSelect').append('<option>All</option')
@@ -121,10 +112,12 @@ $(function() {
 //-------------Event Handling--------------
 //readon button
   $('.showMore').on('click', function() {
+    var $scrollHere = $(this).parent().position().top;
     if ($(this).text() === 'Read On') {
       $(this).prev().find('p:not(:first)').toggle();
       $(this).text('Show Less');
     } else {
+      $(window).scrollTop($scrollHere);
       $(this).prev().find('p:not(:first)').toggle();
       $(this).text('Read On');
     }
@@ -132,12 +125,18 @@ $(function() {
 //about me tab
   $('#aboutTab').on('click', function(e) {
     e.preventDefault();
-    $('#aboutMe').toggleClass('hidden');
+    if ($('#aboutMe').is(':hidden')) {
+      $('#aboutMe').slideDown('fast');
+    }
+    else {
+      $('#aboutMe').slideUp('fast');
+    }
+
   });
 //category filter
   $('#catSelect').on('change', function(e) {
-    e.preventDefault();
-    var sel = $('#catFilter :selected').val();
+    // e.preventDefault();
+    var sel = $(this).val();
     console.log(sel);
     $('article:not(:first)').hide();
     $(".catLine:contains('" + sel + "')").parents('article').show();

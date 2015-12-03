@@ -9,17 +9,19 @@ main {
 }
 
 h1 {
-  font-size: 4em;
-  margin: 7px auto;
-  width: 150px;
+  font-size: 3.5em;
+  margin: 0px auto;
+  width: 140px;
   border: 2px solid black;
   text-align: left;
-  padding: 20px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 h4 {
-  font-size: 40px;
+  font-size: 2em;
   text-align: center;
+  margin-bottom: 40px;
 }
 
 #aboutMe {
@@ -35,9 +37,9 @@ nav {
 
 nav li{
   display: block;
-  margin: 50px auto;
+  margin: 20px auto;
   width: 60%;
-  height: 90px;
+  height: 60px;
   border: 1px solid black;
   border-radius: 4px;
   text-align: center;
@@ -45,7 +47,7 @@ nav li{
 }
 
 li a {
-  font-size: 2.3em;
+  font-size: 2em;
   text-align: center;
   text-decoration: none;
 }
@@ -57,12 +59,12 @@ li a {
 
 form p{
   display: inline;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 
 .filter {
-  font-size: 2em;
-  height: 100px;
+  font-size: 1.5em;
+  height: 50px;
   width: 50%;
   margin-left: 10px;
 }

@@ -8,7 +8,6 @@ $(function() {
 
   var articleArray = [];
 
-
 //Constructor to receive ext. data objects
   function MakeAr(num) {
     this.num = num;
@@ -18,43 +17,16 @@ $(function() {
     this.authorUrl = blog.rawData[num].authorUrl;
     this.publishedOn = blog.rawData[num].publishedOn;
     this.body = blog.rawData[num].body;
+    this.timeStamp = parseInt((new Date() - new Date(this.publishedOn))/1000/60/60/24);
+    if (this.timeStamp === 1) {
+      this.daysAgo = this.timeStamp + ' day ago';
+    } else if (this.timeStamp === 0) {
+      this.daysAgo = 'today';
+    } else {
+      this.daysAgo = this.timeStamp + ' days ago';
+    }
   }
 //DOM cloning + populating
-  MakeAr.prototype.toHtml = function() {
-
-    var $section = $('#allArticles');
-    var timeStamp = parseInt((new Date() - new Date(this.publishedOn))/1000/60/60/24);
-    var $newAr = $('article.blogEntry').clone();
-    $newAr.removeClass('blogEntry');
-    $newAr.find('.entryTitle').html(this.title);
-
-    if (timeStamp === 1) {
-      $newAr.find('.byLine').html('By ' + "<a class='authLine' href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published ' + timeStamp + ' day ago');
-    } else if (timeStamp === 0) {
-      $newAr.find('.byLine').html('By ' + "<a class='authLine' href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published today');
-    } else {
-      $newAr.find('.byLine').html('By ' + "<a class='authLine' href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published ' + timeStamp + ' days ago');
-    }
-    $newAr.find('.catLine').html('Category: ' + this.category);
-    $newAr.find('.entryBody').html(this.body);
-    $newAr.find('.entryBody p').hide();
-    $newAr.find('.entryBody p:first-child').show();
-
-    $newAr.append('<br />' + '<br />' + '<br />' + '<br />' + '<hr>' + '<br />');
-
-    $newAr.appendTo($section);
-  };
-
-//---------------------------------------------------------------
-
-  MakeAr.prototype.handleBarHtml = function() {
-    var entryTemplate = $('#articleTemplate').html();
-    var compiledTemplate = Handlebars.compile(entryTemplate);
-    var html = compiledTemplate(blog.rawData);
-    $('#allArticles').append(html);
-    console.log(blog.rawData);
-  };
-
   function handleBarAll() {
     var entryTemplate = $('#articleTemplate').html();
     var compiledTemplate = Handlebars.compile(entryTemplate);
@@ -162,27 +134,25 @@ $(function() {
   $('#catSelect').on('change', function(e) {
     // e.preventDefault();
     var sel = $(this).val();
-    console.log(sel);
-    $('article:not(:first)').hide();
+
+    $('article').hide();
     $(".catLine:contains('" + sel + "')").parents('article').show();
     if (sel == 'All') {
-      $('article:not(:first)').show();
+      $('article').show();
     }
-    // sel = 'All';
   });
 //author filter
   $('#authSelect').on('change', function(e) {
     e.preventDefault();
-    var sel = $('#authFilter :selected').val();
-    console.log(sel);
-    $('article:not(:first)').hide();
+    var sel = $(this).val();
+
+    $('article').hide();
     $(".authLine:contains('" + sel + "')").parents('article').show();
     if (sel == 'All') {
-      $('article:not(:first)').show();
+      $('article').show();
     }
-    // $('#authFilter : selected').val() = 'All';
   });
 
-
+//---END--------------------END------------------------END
 });
 

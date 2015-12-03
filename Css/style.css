@@ -6,7 +6,7 @@ main {
 h1 {
   font-size: 3.5em;
   margin: 0 auto;
-  width: 140px;
+  width: 130px;
   border: 2px solid black;
   text-align: left;
   padding: 10px;
@@ -74,6 +74,7 @@ article header {
 
 .byLine {
   padding-left: 30px;
+  margin-bottom: 0;
 }
 
 .authLine {
@@ -84,7 +85,7 @@ article header {
   padding-bottom: 20px;
 }
 
-.arBody p {
+.entryBody p {
   text-indent: 10%;
 }
 
@@ -143,7 +144,9 @@ img {
     width: 40%;
   }
   main {
-    padding: 80px;
+    padding-left: 80px;
+    padding-right: 80px;
+
   }
   button {
     color: #1EAEDB;

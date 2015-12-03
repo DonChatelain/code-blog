@@ -22,11 +22,11 @@ $(function() {
 //DOM cloning + populating
   MakeAr.prototype.toHtml = function() {
 
-    var $section = $('#articles');
+    var $section = $('#allArticles');
     var timeStamp = parseInt((new Date() - new Date(this.publishedOn))/1000/60/60/24);
-    var $newAr = $('article.arTemplate').clone();
-    $newAr.removeClass('arTemplate');
-    $newAr.find('.arTitle').html(this.title);
+    var $newAr = $('article.blogEntry').clone();
+    $newAr.removeClass('blogEntry');
+    $newAr.find('.entryTitle').html(this.title);
 
     if (timeStamp === 1) {
       $newAr.find('.byLine').html('By ' + "<a class='authLine' href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published ' + timeStamp + ' day ago');
@@ -36,14 +36,37 @@ $(function() {
       $newAr.find('.byLine').html('By ' + "<a class='authLine' href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published ' + timeStamp + ' days ago');
     }
     $newAr.find('.catLine').html('Category: ' + this.category);
-    $newAr.find('.arBody').html(this.body);
-    $newAr.find('.arBody p').hide();
-    $newAr.find('.arBody p:first-child').show();
+    $newAr.find('.entryBody').html(this.body);
+    $newAr.find('.entryBody p').hide();
+    $newAr.find('.entryBody p:first-child').show();
 
     $newAr.append('<br />' + '<br />' + '<br />' + '<br />' + '<hr>' + '<br />');
 
     $newAr.appendTo($section);
   };
+
+//---------------------------------------------------------------
+
+  MakeAr.prototype.handleBarHtml = function() {
+    var entryTemplate = $('#articleTemplate').html();
+    var compiledTemplate = Handlebars.compile(entryTemplate);
+    var html = compiledTemplate(blog.rawData);
+    $('#allArticles').append(html);
+    console.log(blog.rawData);
+  };
+
+  function handleBarAll() {
+    var entryTemplate = $('#articleTemplate').html();
+    var compiledTemplate = Handlebars.compile(entryTemplate);
+
+    for (var i = 0; i < articleArray.length; i++) {
+      var html = compiledTemplate(articleArray[i]);
+      $('#allArticles').append(html);
+    }
+    $('.blogEntry').find('.entryBody p').hide();
+    $('.blogEntry').find('.entryBody p:first-child').show();
+    console.log();
+  }
 
 //--------Sorting Options------------------------
 
@@ -78,8 +101,8 @@ $(function() {
   }
   function popAllArticles() {
     sortObjs();
-    for (var i = 0; i < blog.rawData.length; i++) {
-      articleArray[i].toHtml();
+    for (var i = 0; i < articleArray.length; i++) {
+      // articleArray[i].handleBarHtml();
     }
   }
 //populate both filter dropdown menus
@@ -107,11 +130,13 @@ $(function() {
   //-----------Executives----------------
 
   popAllArticles();
+  handleBarAll();
   popFilters();
+
 
 //-------------Event Handling--------------
 //readon button
-  $('.showMore').on('click', function() {
+  $('.showMoreButton').on('click', function() {
     var $scrollHere = $(this).parent().position().top;
     if ($(this).text() === 'Read On') {
       $(this).prev().find('p:not(:first)').toggle();

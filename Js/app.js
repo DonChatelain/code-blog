@@ -27,7 +27,7 @@ $(function() {
     }
   }
 //DOM cloning + populating
-  function handleBarAll() {
+  function sendAllToDom() {
     var entryTemplate = $('#articleTemplate').html();
     var compiledTemplate = Handlebars.compile(entryTemplate);
 
@@ -50,7 +50,9 @@ $(function() {
   function byAuthor(a,b) {
     if(a.author > b.author) {return 1;}
     if(b.author > a.author) {return -1;}
-    else {return 0;}
+    else {
+      return 0;
+    }
   }
   function byCategory(a,b) {
     if(a.category > b.category) {return 1;}
@@ -70,12 +72,6 @@ $(function() {
   function sortObjs() {
     constructObjs();
     articleArray.sort(byDate);
-  }
-  function popAllArticles() {
-    sortObjs();
-    for (var i = 0; i < articleArray.length; i++) {
-      // articleArray[i].handleBarHtml();
-    }
   }
 //populate both filter dropdown menus
   function popFilters() {
@@ -101,12 +97,12 @@ $(function() {
 
   //-----------Executives----------------
 
-  popAllArticles();
-  handleBarAll();
+  sortObjs();
+  sendAllToDom();
   popFilters();
 
-
 //-------------Event Handling--------------
+
 //readon button
   $('.showMoreButton').on('click', function() {
     var $scrollHere = $(this).parent().position().top;
@@ -128,13 +124,11 @@ $(function() {
     else {
       $('#aboutMe').slideUp('fast');
     }
-
   });
 //category filter
   $('#catSelect').on('change', function(e) {
     // e.preventDefault();
     var sel = $(this).val();
-
     $('article').hide();
     $(".catLine:contains('" + sel + "')").parents('article').show();
     if (sel == 'All') {
@@ -145,7 +139,6 @@ $(function() {
   $('#authSelect').on('change', function(e) {
     e.preventDefault();
     var sel = $(this).val();
-
     $('article').hide();
     $(".authLine:contains('" + sel + "')").parents('article').show();
     if (sel == 'All') {

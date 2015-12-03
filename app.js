@@ -35,12 +35,12 @@ $(function() {
     } else {
       $newAr.find('.byLine').html('By ' + "<a class='authLine' href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published ' + timeStamp + ' days ago');
     }
-    $newAr.find('.catLine').html('Category: ' + this.category);
+    $newAr.find('.catLine').html('Category: ' + this.cateory);
     $newAr.find('.arBody').html(this.body);
     $newAr.find('.arBody p').hide();
-    $newAr.find('.arBody p:first').show();
+    $newAr.find('.arBody p:first-child').show();
 
-    $newAr.append('<br />' + '<hr>' + '<br />');
+    $newAr.append('<br />' + '<br />' + '<br />' + '<br />' + '<hr>' + '<br />');
 
     $newAr.appendTo($section)
   };
@@ -112,10 +112,12 @@ $(function() {
 //-------------Event Handling--------------
 //readon button
   $('.showMore').on('click', function() {
+    var $scrollHere = $(this).parent().position().top;
     if ($(this).text() === 'Read On') {
       $(this).prev().find('p:not(:first)').toggle();
       $(this).text('Show Less');
     } else {
+      $(window).scrollTop($scrollHere);
       $(this).prev().find('p:not(:first)').toggle();
       $(this).text('Read On');
     }

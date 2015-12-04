@@ -1,0 +1,65 @@
+
+#pageTitle {
+  margin: 0 auto;
+  width: 130px;
+  border: 2px solid black;
+  text-align: left;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#subTitle {
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+#aboutMe {
+  display: none;
+  border: 1px solid black;
+  padding: 20px;
+  margin: 20px auto;
+}
+
+.filterContain {
+  text-align: center;
+}
+
+.filter {
+  font-size: 1.5em;
+  height: 50px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.entryTitle {
+  font-size: 2em;
+  padding-left: 15px;
+}
+
+.byLine {
+  padding-left: 30px;
+  margin-bottom: 0;
+}
+
+.authLine {
+  text-decoration: none;
+}
+.catLine {
+  padding-left: 30px;
+  padding-bottom: 20px;
+}
+
+.entryBody p {
+  text-indent: 10%;
+}
+
+@media screen and (min-width: 650px) {
+
+  .filter {
+    font-size: 1.2em;
+    height: 40px;
+    width: 40%;
+  }
+
+}

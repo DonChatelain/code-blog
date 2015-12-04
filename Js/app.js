@@ -8,7 +8,6 @@ $(function() {
 
   var articleArray = [];
 
-
 //Constructor to receive ext. data objects
   function MakeAr(num) {
     this.num = num;
@@ -18,32 +17,28 @@ $(function() {
     this.authorUrl = blog.rawData[num].authorUrl;
     this.publishedOn = blog.rawData[num].publishedOn;
     this.body = blog.rawData[num].body;
-  };
-//DOM cloning + populating
-  MakeAr.prototype.toHtml = function() {
-
-    var $section = $('#articles');
-    var timeStamp = parseInt((new Date() - new Date(this.publishedOn))/1000/60/60/24);
-    var $newAr = $('article.arTemplate').clone();
-    $newAr.removeClass('arTemplate');
-    $newAr.find('.arTitle').html(this.title);
-
-    if (timeStamp === 1) {
-      $newAr.find('.byLine').html('By ' + "<a class='authLine' href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published ' + timeStamp + ' day ago');
-    } else if (timeStamp === 0) {
-      $newAr.find('.byLine').html('By ' + "<a class='authLine' href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published today');
+    this.timeStamp = parseInt((new Date() - new Date(this.publishedOn))/1000/60/60/24);
+    if (this.timeStamp === 1) {
+      this.daysAgo = this.timeStamp + ' day ago';
+    } else if (this.timeStamp === 0) {
+      this.daysAgo = 'today';
     } else {
-      $newAr.find('.byLine').html('By ' + "<a class='authLine' href='" + this.authorUrl + "'>" + this.author + '</a>' + ' published ' + timeStamp + ' days ago');
+      this.daysAgo = this.timeStamp + ' days ago';
     }
-    $newAr.find('.catLine').html('Category: ' + this.category);
-    $newAr.find('.arBody').html(this.body);
-    $newAr.find('.arBody p').hide();
-    $newAr.find('.arBody p:first-child').show();
+  }
+//DOM cloning + populating
+  function sendAllToDom() {
+    var entryTemplate = $('#articleTemplate').html();
+    var compiledTemplate = Handlebars.compile(entryTemplate);
 
-    $newAr.append('<br />' + '<br />' + '<br />' + '<br />' + '<hr>' + '<br />');
-
-    $newAr.appendTo($section)
-  };
+    for (var i = 0; i < articleArray.length; i++) {
+      var html = compiledTemplate(articleArray[i]);
+      $('#allArticles').append(html);
+    }
+    $('.blogEntry').find('.entryBody p').hide();
+    $('.blogEntry').find('.entryBody p:first-child').show();
+    console.log();
+  }
 
 //--------Sorting Options------------------------
 
@@ -55,7 +50,9 @@ $(function() {
   function byAuthor(a,b) {
     if(a.author > b.author) {return 1;}
     if(b.author > a.author) {return -1;}
-    else {return 0;}
+    else {
+      return 0;
+    }
   }
   function byCategory(a,b) {
     if(a.category > b.category) {return 1;}
@@ -76,42 +73,38 @@ $(function() {
     constructObjs();
     articleArray.sort(byDate);
   }
-  function popAllArticles() {
-    sortObjs();
-    for (var i = 0; i < blog.rawData.length; i++) {
-      articleArray[i].toHtml();
-    }
-  }
 //populate both filter dropdown menus
   function popFilters() {
     var tempCatArray = [];
     var uniqueCatArray = [];
 
     articleArray.sort(byCategory);
-    $('#catSelect').append('<option>All</option');
+    $('#catSelect').append('<option value="All">-Filter by Category-</option');
     for (var i = 0; i < articleArray.length; i++) {
       tempCatArray[i] = articleArray[i].category;
     }
     uniqueCatArray = jQuery.unique(tempCatArray);
 
-    for (var i = 0; i < uniqueCatArray.length; i++) {
+    for (i = 0; i < uniqueCatArray.length; i++) {
       $('#catFilter').find('select').append('<option value="' + uniqueCatArray[i] + '">' + uniqueCatArray[i] + '</option>');
     }
     articleArray.sort(byAuthor);
-    $('#authSelect').append('<option>All</option')
-    for (var i = 0; i < articleArray.length; i++) {
+    $('#authSelect').append('<option value="All">-Filter by Author-</option');
+    for (i = 0; i < articleArray.length; i++) {
       $('#authFilter').find('select').append('<option value="' + articleArray[i].author + '">' + articleArray[i].author + '</option>');
     }
   }
 
   //-----------Executives----------------
 
-  popAllArticles();
+  sortObjs();
+  sendAllToDom();
   popFilters();
 
 //-------------Event Handling--------------
+
 //readon button
-  $('.showMore').on('click', function() {
+  $('.showMoreButton').on('click', function() {
     var $scrollHere = $(this).parent().position().top;
     if ($(this).text() === 'Read On') {
       $(this).prev().find('p:not(:first)').toggle();
@@ -131,33 +124,28 @@ $(function() {
     else {
       $('#aboutMe').slideUp('fast');
     }
-
   });
 //category filter
   $('#catSelect').on('change', function(e) {
     // e.preventDefault();
     var sel = $(this).val();
-    console.log(sel);
-    $('article:not(:first)').hide();
+    $('article').hide();
     $(".catLine:contains('" + sel + "')").parents('article').show();
     if (sel == 'All') {
-      $('article:not(:first)').show();
+      $('article').show();
     }
-    // sel = 'All';
   });
 //author filter
   $('#authSelect').on('change', function(e) {
     e.preventDefault();
-    var sel = $('#authFilter :selected').val();
-    console.log(sel);
-    $('article:not(:first)').hide();
+    var sel = $(this).val();
+    $('article').hide();
     $(".authLine:contains('" + sel + "')").parents('article').show();
     if (sel == 'All') {
-      $('article:not(:first)').show();
+      $('article').show();
     }
-    // $('#authFilter : selected').val() = 'All';
   });
 
-
+//---END--------------------END------------------------END
 });
 

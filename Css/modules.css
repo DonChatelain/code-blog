@@ -11,7 +11,7 @@
 #subTitle {
   font-size: 2em;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 #aboutMe {
@@ -21,9 +21,8 @@
   margin: 20px auto;
 }
 
-#filters {
+.filterContain {
   text-align: center;
-  margin-top: 50px;
 }
 
 .filter {

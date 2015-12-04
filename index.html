@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ipsum Blog</title>
+    <title>Don's Blog</title>
     <link rel="stylesheet" type="text/css" href="Css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="Css/skeleton.css" />
     <link rel="stylesheet" type="text/css" href="Css/base.css" />
@@ -18,9 +18,7 @@
       <article class="blogEntry">
         <header>
           <h3 class="entryTitle">{{title}}</h3>
-
           <p class="byLine">By <a class="authLine" href= {{authorUrl}} >{{author}}</a> published {{daysAgo}}</p>
-
           <div class="catLine">
             <p>Category: {{category}}</p>
           </div>
@@ -50,7 +48,7 @@
           <p>Hey there! This is a little blurb about myself and my endevears to create this blog. Only took me a day or so to get it off the ground and looking alright but I will continue to work on it for weeks to come- adding new functionality and all kinds of cool stuff to it! Hope you enjoy!</p>
           <p id="signature">-Don</p>
         </section>
-        <section id="filters">
+        <section class="filterContain">
           <form id="catFilter">
             <select id="catSelect" class="filter"></select>
           </form>
@@ -58,12 +56,18 @@
             <select id="authSelect" class="filter"></select>
           </form>
         </section>
+<!--         <section class="filterContain">
+          <select id="sortSelect" class="filter">
+            <option value="sortDate">Sort by Date</option>
+            <option value="sortAuthor">Sort by Author</option>
+            <option value="sortCategory">Sort by Category</option>
+          </select>
+        </section> -->
       </nav>
       <hr>
       <section id="allArticles"></section>
     </main>
 
-    <script src="Js/util.js"></script>
     <script src="Js/blogArticles.js"></script>
     <script src="Js/app.js"></script>
 

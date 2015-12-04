@@ -1,0 +1,13 @@
+
+.pull-left{
+  float: left;
+  padding-top: 10px;
+  padding-right: 10px;
+  clear:left;
+}
+.pull-right{
+  float: right;
+  padding-top: 10px;
+  padding-left: 10px;
+  clear: right;
+}

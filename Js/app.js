@@ -79,7 +79,8 @@ $(function() {
     var uniqueCatArray = [];
 
     articleArray.sort(byCategory);
-    $('#catSelect').append('<option value="All">-Filter by Category-</option');
+    $('#catSelect').append('<option value="default">-Filter by Category-</option');
+    $('#catSelect').append('<option value="all">All</option');
     for (var i = 0; i < articleArray.length; i++) {
       tempCatArray[i] = articleArray[i].category;
     }
@@ -89,7 +90,8 @@ $(function() {
       $('#catFilter').find('select').append('<option value="' + uniqueCatArray[i] + '">' + uniqueCatArray[i] + '</option>');
     }
     articleArray.sort(byAuthor);
-    $('#authSelect').append('<option value="All">-Filter by Author-</option');
+    $('#authSelect').append('<option value="default">-Filter by Author-</option');
+    $('#authSelect').append('<option value="all">All</option');
     for (i = 0; i < articleArray.length; i++) {
       $('#authFilter').find('select').append('<option value="' + articleArray[i].author + '">' + articleArray[i].author + '</option>');
     }
@@ -131,7 +133,7 @@ $(function() {
     var sel = $(this).val();
     $('article').hide();
     $(".catLine:contains('" + sel + "')").parents('article').show();
-    if (sel == 'All') {
+    if (sel == 'all' || sel == 'default') {
       $('article').show();
     }
   });
@@ -141,7 +143,7 @@ $(function() {
     var sel = $(this).val();
     $('article').hide();
     $(".authLine:contains('" + sel + "')").parents('article').show();
-    if (sel == 'All') {
+    if (sel == 'all' || sel == 'default') {
       $('article').show();
     }
   });

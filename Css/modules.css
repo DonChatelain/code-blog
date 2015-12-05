@@ -54,6 +54,12 @@
   text-indent: 10%;
 }
 
+.block {
+  border: 1px solid grey;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 @media screen and (min-width: 650px) {
 
   #pageTitle {

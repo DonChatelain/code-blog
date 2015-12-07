@@ -21,6 +21,10 @@
   margin: 20px auto;
 }
 
+#savePostAttributes {
+  display: block;
+}
+
 .filterContain {
   text-align: center;
 }
@@ -58,6 +62,11 @@
   border: 1px solid grey;
   padding: 20px;
   margin-bottom: 20px;
+}
+
+.textBox p{
+  white-space: normal;
+  display: inline-block;
 }
 
 @media screen and (min-width: 650px) {

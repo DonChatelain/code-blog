@@ -6,79 +6,69 @@
 
 $(function() {
 
-  var tempArticleArray = [];
   var newArticleArray = [];
 
-  function ajaxify() {
+  function get_ajax() {
     $.ajax({
       type: 'HEAD',
       url: ('blogArticles.JSON'),
-      success: function(data, status, jqHXR) {
-        var eTag = jqHXR.getResponseHeader('eTag');
-        console.log(eTag);
-        localStorage.setItem('ergodicEtag', eTag);
-      }
-    });
+      success: function(data, status, xhr) {
+        console.log('blogArticles.json successfully retrieved');
+        var eTag = xhr.getResponseHeader('eTag');
+        console.log('got etag: ' + eTag);
+        var localEtag  = localStorage.getItem('ergodicEtag');
+        if (localEtag) {
+          console.log('theres a local etag');
+          if (localEtag != eTag) {
+            console.log('etags dont match');
+            get_json(eTag);
+          } else {
+            console.log('etags match!');
+            getLocal_Contruct();
+            get_template();
+          }
+        } else {
+          console.log('no local tag, lets json bitch');
+          get_json(eTag);
+        }
+      } //end success function
+    }); //end ajax function
+  }
+
+  function getLocal_Contruct() {
+    var rawblogData = localStorage.getItem('blogData');
+    var blogData = JSON.parse(rawblogData);
+
+    for (var i = 0; i < blogData.length; i++) {
+      newArticleArray[i] = new MakeAr(blogData[i]);
+    }
+  }
+
+  function get_json(placeHolderEtag) {
+
     $.getJSON('blogArticles.JSON', function(data){
       localStorage.setItem('blogData', JSON.stringify(data));
+      localStorage.setItem('ergodicEtag', placeHolderEtag);
       var rawblogData = localStorage.getItem('blogData');
       var blogData = JSON.parse(rawblogData);
+      console.log(blogData.length);
       for (var i = 0; i < blogData.length; i++) {
         newArticleArray[i] = new MakeAr(blogData[i]);
       }
-      popFilters();
-      newArticleArray.sort(byDate);
-      $.get('articleTemplate.handlebars', function(data) {
-        for (var i = 0; i < newArticleArray.length; i++) {
-          var compiled = Handlebars.compile(data);
-          var html = compiled(newArticleArray[i]);
-          $('#allArticles').append(html);
-        }
-        hideFullBody();
-        $('.showMoreButton').on('click', function() {
-          var $scrollHere = $(this).parent().position().top;
-          if ($(this).text() === 'Read On') {
-            $(this).prev().find('p:not(:first)').toggle();
-            $(this).text('Show Less');
-          } else {
-            $(window).scrollTop($scrollHere);
-            $(this).prev().find('p:not(:first)').toggle();
-            $(this).text('Read On');
-          }
-        });
-      });
+      console.log('objects created', newArticleArray.length);
+      get_template();
     });
   }
 
+  function get_template() {
 
-  var articleArray = [];
+    popFilters();
 
-//Constructor to receive ext. data objects
-  function MakeAr(obj) {
-    this.title = obj.title;
-    this.category = obj.category;
-    this.author = obj.author;
-    this.authorUrl = obj.authorUrl;
-    this.publishedOn = obj.publishedOn;
-    this.body = obj.body;
-    this.timeStamp = parseInt((new Date() - new Date(this.publishedOn))/1000/60/60/24);
-    if (this.timeStamp === 1) {
-      this.daysAgo = this.timeStamp + ' day ago';
-    } else if (this.timeStamp === 0) {
-      this.daysAgo = 'today';
-    } else {
-      this.daysAgo = this.timeStamp + ' days ago';
-    }
-  }
-//DOM cloning + populating
-  function sendAllToDom() {
-
-    articleArray.sort(byDate);
-
+    newArticleArray.sort(byDate);
     $.get('articleTemplate.handlebars', function(data) {
-      for (var i = 0; i < articleArray.length; i++) {
+      for (var i = 0; i < newArticleArray.length; i++) {
         var compiled = Handlebars.compile(data);
-        var html = compiled(articleArray[i]);
+        var html = compiled(newArticleArray[i]);
         $('#allArticles').append(html);
       }
       hideFullBody();
@@ -94,12 +84,46 @@ $(function() {
         }
       });
     });
-
   }
 
-  function hideFullBody() {
-    $('.blogEntry').find('.entryBody p').hide();
-    $('.blogEntry').find('.entryBody p:first-child').show();
+  function handbarAppend() {
+    $.get('articleTemplate.handlebars', function(data) {
+      for (var i = 0; i < newArticleArray.length; i++) {
+        var compiled = Handlebars.compile(data);
+        var html = compiled(newArticleArray[i]);
+        $('#allArticles').append(html);
+      }
+      hideFullBody();
+      $('.showMoreButton').on('click', function() {
+        var $scrollHere = $(this).parent().position().top;
+        if ($(this).text() === 'Read On') {
+          $(this).prev().find('p:not(:first)').toggle();
+          $(this).text('Show Less');
+        } else {
+          $(window).scrollTop($scrollHere);
+          $(this).prev().find('p:not(:first)').toggle();
+          $(this).text('Read On');
+        }
+      });
+    });
+  }
+
+//Constructor to receive ext. data objects
+  function MakeAr(obj) {
+    this.title = obj.title;
+    this.category = obj.category;
+    this.author = obj.author;
+    this.authorUrl = obj.authorUrl;
+    this.publishedOn = obj.publishedOn;
+    this.body = marked(obj.body);
+    this.timeStamp = parseInt((new Date() - new Date(this.publishedOn))/1000/60/60/24);
+    if (this.timeStamp === 1) {
+      this.daysAgo = this.timeStamp + ' day ago';
+    } else if (this.timeStamp === 0) {
+      this.daysAgo = 'today';
+    } else {
+      this.daysAgo = this.timeStamp + ' days ago';
+    }
   }
 
 //--------Sorting Options------------------------
@@ -124,20 +148,18 @@ $(function() {
     }
   }
 
-  //-------------Populating functions-----------
-
-  function constructObjs() {
-    for (var i = 0; i < blogData.length; i++) {
-      newArticleArray[i] = new MakeAr(blogData[i]);
-    }
-    // var articlesToStorage = JSON.stringify(articleArray);
-    // localStorage.setItem('articles', articlesToStorage);
+  function hideFullBody() {
+    $('.blogEntry').find('.entryBody p').hide();
+    $('.blogEntry').find('.entryBody p:first-child').show();
   }
 
 //populate both filter dropdown menus
   function popFilters() {
+
     var tempCatArray = [];
     var uniqueCatArray = [];
+    var tempAuthArray = [];
+    var uniqueAuthArray = [];
 
     newArticleArray.sort(byCategory);
     $('#catSelect').append('<option value="default">-Filter by Category-</option');
@@ -146,28 +168,27 @@ $(function() {
       tempCatArray[i] = newArticleArray[i].category;
     }
     uniqueCatArray = jQuery.unique(tempCatArray);
-
     for (i = 0; i < uniqueCatArray.length; i++) {
       $('#catFilter').find('select').append('<option value="' + uniqueCatArray[i] + '">' + uniqueCatArray[i] + '</option>');
     }
-    articleArray.sort(byAuthor);
+    newArticleArray.sort(byAuthor);
     $('#authSelect').append('<option value="default">-Filter by Author-</option');
     $('#authSelect').append('<option value="all">All</option');
-    for (i = 0; i < newArticleArray.length; i++) {
-      $('#authFilter').find('select').append('<option value="' + newArticleArray[i].author + '">' + newArticleArray[i].author + '</option>');
+    for (var i = 0; i < newArticleArray.length; i++) {
+      tempAuthArray[i] = newArticleArray[i].author;
+    }
+    uniqueAuthArray = jQuery.unique(tempAuthArray);
+    for (i = 0; i < uniqueAuthArray.length; i++) {
+      $('#authFilter').find('select').append('<option value="' + uniqueAuthArray[i] + '">' + uniqueAuthArray[i] + '</option>');
     }
   }
 
   //-----------Executives----------------
-  ajaxify();
-  // constructObjs();
-  // popFilters();
 
-  // sendAllToDom();
-
-
+  get_ajax();
 
 //-------------Event Handling--------------
+
 //about me tab
   $('#aboutTab').on('click', function(e) {
     e.preventDefault();

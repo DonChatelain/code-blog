@@ -6,17 +6,116 @@
 
 $(function() {
 
-  var articleArray = [];
+  var newArticleArray = [];
+
+  function get_ajax() {
+    $.ajax({
+      type: 'HEAD',
+      url: ('blogArticles.JSON'),
+      success: function(data, status, xhr) {
+        console.log('blogArticles.json successfully retrieved');
+        var eTag = xhr.getResponseHeader('eTag');
+        console.log('got etag: ' + eTag);
+        var localEtag  = localStorage.getItem('ergodicEtag');
+        if (localEtag) {
+          console.log('theres a local etag');
+          if (localEtag != eTag) {
+            console.log('etags dont match');
+            get_json(eTag);
+          } else {
+            console.log('etags match!');
+            getLocal_Contruct();
+            get_template();
+          }
+        } else {
+          console.log('no local tag, lets json bitch');
+          get_json(eTag);
+        }
+      } //end success function
+    }); //end ajax function
+  }
+
+  function getLocal_Contruct() {
+    var rawblogData = localStorage.getItem('blogData');
+    var blogData = JSON.parse(rawblogData);
+
+    for (var i = 0; i < blogData.length; i++) {
+      newArticleArray[i] = new MakeAr(blogData[i]);
+    }
+  }
+
+  function get_json(placeHolderEtag) {
+
+    $.getJSON('blogArticles.JSON', function(data){
+      localStorage.setItem('blogData', JSON.stringify(data));
+      localStorage.setItem('ergodicEtag', placeHolderEtag);
+      var rawblogData = localStorage.getItem('blogData');
+      var blogData = JSON.parse(rawblogData);
+      console.log(blogData.length);
+      for (var i = 0; i < blogData.length; i++) {
+        newArticleArray[i] = new MakeAr(blogData[i]);
+      }
+      console.log('objects created', newArticleArray.length);
+      get_template();
+    });
+  }
+
+  function get_template() {
+
+    popFilters();
+
+    newArticleArray.sort(byDate);
+    $.get('articleTemplate.handlebars', function(data) {
+      for (var i = 0; i < newArticleArray.length; i++) {
+        var compiled = Handlebars.compile(data);
+        var html = compiled(newArticleArray[i]);
+        $('#allArticles').append(html);
+      }
+      hideFullBody();
+      $('.showMoreButton').on('click', function() {
+        var $scrollHere = $(this).parent().position().top;
+        if ($(this).text() === 'Read On') {
+          $(this).prev().find('p:not(:first)').toggle();
+          $(this).text('Show Less');
+        } else {
+          $(window).scrollTop($scrollHere);
+          $(this).prev().find('p:not(:first)').toggle();
+          $(this).text('Read On');
+        }
+      });
+    });
+  }
+
+  function handbarAppend() {
+    $.get('articleTemplate.handlebars', function(data) {
+      for (var i = 0; i < newArticleArray.length; i++) {
+        var compiled = Handlebars.compile(data);
+        var html = compiled(newArticleArray[i]);
+        $('#allArticles').append(html);
+      }
+      hideFullBody();
+      $('.showMoreButton').on('click', function() {
+        var $scrollHere = $(this).parent().position().top;
+        if ($(this).text() === 'Read On') {
+          $(this).prev().find('p:not(:first)').toggle();
+          $(this).text('Show Less');
+        } else {
+          $(window).scrollTop($scrollHere);
+          $(this).prev().find('p:not(:first)').toggle();
+          $(this).text('Read On');
+        }
+      });
+    });
+  }
 
 //Constructor to receive ext. data objects
-  function MakeAr(num) {
-    this.num = num;
-    this.title = blog.rawData[num].title;
-    this.category = blog.rawData[num].category;
-    this.author = blog.rawData[num].author;
-    this.authorUrl = blog.rawData[num].authorUrl;
-    this.publishedOn = blog.rawData[num].publishedOn;
-    this.body = blog.rawData[num].body;
+  function MakeAr(obj) {
+    this.title = obj.title;
+    this.category = obj.category;
+    this.author = obj.author;
+    this.authorUrl = obj.authorUrl;
+    this.publishedOn = obj.publishedOn;
+    this.body = marked(obj.body);
     this.timeStamp = parseInt((new Date() - new Date(this.publishedOn))/1000/60/60/24);
     if (this.timeStamp === 1) {
       this.daysAgo = this.timeStamp + ' day ago';
@@ -25,19 +124,6 @@ $(function() {
     } else {
       this.daysAgo = this.timeStamp + ' days ago';
     }
-  }
-//DOM cloning + populating
-  function sendAllToDom() {
-    var entryTemplate = $('#articleTemplate').html();
-    var compiledTemplate = Handlebars.compile(entryTemplate);
-
-    for (var i = 0; i < articleArray.length; i++) {
-      var html = compiledTemplate(articleArray[i]);
-      $('#allArticles').append(html);
-    }
-    $('.blogEntry').find('.entryBody p').hide();
-    $('.blogEntry').find('.entryBody p:first-child').show();
-    console.log();
   }
 
 //--------Sorting Options------------------------
@@ -62,61 +148,47 @@ $(function() {
     }
   }
 
-  //-------------Populating functions-----------
+  function hideFullBody() {
+    $('.blogEntry').find('.entryBody p').hide();
+    $('.blogEntry').find('.entryBody p:first-child').show();
+  }
 
-  function constructObjs() {
-    for (var i = 0; i < blog.rawData.length; i++) {
-      articleArray[i] = new MakeAr(i);
-    }
-  }
-  function sortObjs() {
-    constructObjs();
-    articleArray.sort(byDate);
-  }
 //populate both filter dropdown menus
   function popFilters() {
+
     var tempCatArray = [];
     var uniqueCatArray = [];
+    var tempAuthArray = [];
+    var uniqueAuthArray = [];
 
-    articleArray.sort(byCategory);
+    newArticleArray.sort(byCategory);
     $('#catSelect').append('<option value="default">-Filter by Category-</option');
     $('#catSelect').append('<option value="all">All</option');
-    for (var i = 0; i < articleArray.length; i++) {
-      tempCatArray[i] = articleArray[i].category;
+    for (var i = 0; i < newArticleArray.length; i++) {
+      tempCatArray[i] = newArticleArray[i].category;
     }
     uniqueCatArray = jQuery.unique(tempCatArray);
-
     for (i = 0; i < uniqueCatArray.length; i++) {
       $('#catFilter').find('select').append('<option value="' + uniqueCatArray[i] + '">' + uniqueCatArray[i] + '</option>');
     }
-    articleArray.sort(byAuthor);
+    newArticleArray.sort(byAuthor);
     $('#authSelect').append('<option value="default">-Filter by Author-</option');
     $('#authSelect').append('<option value="all">All</option');
-    for (i = 0; i < articleArray.length; i++) {
-      $('#authFilter').find('select').append('<option value="' + articleArray[i].author + '">' + articleArray[i].author + '</option>');
+    for (var i = 0; i < newArticleArray.length; i++) {
+      tempAuthArray[i] = newArticleArray[i].author;
+    }
+    uniqueAuthArray = jQuery.unique(tempAuthArray);
+    for (i = 0; i < uniqueAuthArray.length; i++) {
+      $('#authFilter').find('select').append('<option value="' + uniqueAuthArray[i] + '">' + uniqueAuthArray[i] + '</option>');
     }
   }
 
   //-----------Executives----------------
 
-  sortObjs();
-  sendAllToDom();
-  popFilters();
+  get_ajax();
 
 //-------------Event Handling--------------
 
-//readon button
-  $('.showMoreButton').on('click', function() {
-    var $scrollHere = $(this).parent().position().top;
-    if ($(this).text() === 'Read On') {
-      $(this).prev().find('p:not(:first)').toggle();
-      $(this).text('Show Less');
-    } else {
-      $(window).scrollTop($scrollHere);
-      $(this).prev().find('p:not(:first)').toggle();
-      $(this).text('Read On');
-    }
-  });
 //about me tab
   $('#aboutTab').on('click', function(e) {
     e.preventDefault();

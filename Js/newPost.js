@@ -5,6 +5,17 @@ $(function() {
     var $pCategory = $('#categoryInput');
     var $pBody = $('#postBody');
 
+    function receiveDraft() {
+        var fromLocal = localStorage.getItem('newPost');
+        var draftPost = JSON.parse(fromLocal);
+        if (localStorage.getItem('newPost') !== null) {
+            $pTitle.val(draftPost.title);
+            $pAuthor.val(draftPost.author);
+            $pCategory.val(draftPost.category);
+            $pBody.val(draftPost.preBody);
+        }
+    }
+
     function render() {
         var newPost = {};
         var markDownOutput = marked($pBody.val());
@@ -13,6 +24,7 @@ $(function() {
         newPost.title = $pTitle.val();
         newPost.author = $pAuthor.val();
         newPost.category = $pCategory.val();
+        newPost.preBody = $pBody.val();
         newPost.body = markDownOutput;
         newPost.publishedOn = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         newPost.timeStamp = parseInt((new Date() - new Date(newPost.publishedOn))/1000/60/60/24);
@@ -31,7 +43,11 @@ $(function() {
         });
 
         $('#rawHTML').text(newPost.body);
-        $('#jsonOutput').text(JSON.stringify(newPost));
+
+        var toStorage = JSON.stringify(newPost);
+        $('#jsonOutput').text(toStorage);
+        localStorage.setItem('newPost', toStorage);
+
     }
 
     $pTitle.on('input', render);
@@ -39,6 +55,11 @@ $(function() {
     $pCategory.on('input', render);
     $pBody.on('input', render);
 
+    receiveDraft();
     render();
+
+    $('#submitNewPostButton').on('click', function() {
+        localStorage.removeItem('newPost');
+    });
 
 });

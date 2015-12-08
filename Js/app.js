@@ -6,17 +6,61 @@
 
 $(function() {
 
+  var tempArticleArray = [];
+  var newArticleArray = [];
+
+  function ajaxify() {
+    $.ajax({
+      type: 'HEAD',
+      url: ('blogArticles.JSON'),
+      success: function(data, status, jqHXR) {
+        var eTag = jqHXR.getResponseHeader('eTag');
+        console.log(eTag);
+        localStorage.setItem('ergodicEtag', eTag);
+      }
+    });
+    $.getJSON('blogArticles.JSON', function(data){
+      localStorage.setItem('blogData', JSON.stringify(data));
+      var rawblogData = localStorage.getItem('blogData');
+      var blogData = JSON.parse(rawblogData);
+      for (var i = 0; i < blogData.length; i++) {
+        newArticleArray[i] = new MakeAr(blogData[i]);
+      }
+      popFilters();
+      newArticleArray.sort(byDate);
+      $.get('articleTemplate.handlebars', function(data) {
+        for (var i = 0; i < newArticleArray.length; i++) {
+          var compiled = Handlebars.compile(data);
+          var html = compiled(newArticleArray[i]);
+          $('#allArticles').append(html);
+        }
+        hideFullBody();
+        $('.showMoreButton').on('click', function() {
+          var $scrollHere = $(this).parent().position().top;
+          if ($(this).text() === 'Read On') {
+            $(this).prev().find('p:not(:first)').toggle();
+            $(this).text('Show Less');
+          } else {
+            $(window).scrollTop($scrollHere);
+            $(this).prev().find('p:not(:first)').toggle();
+            $(this).text('Read On');
+          }
+        });
+      });
+    });
+  }
+
+
   var articleArray = [];
 
 //Constructor to receive ext. data objects
-  function MakeAr(num) {
-    this.num = num;
-    this.title = blog.rawData[num].title;
-    this.category = blog.rawData[num].category;
-    this.author = blog.rawData[num].author;
-    this.authorUrl = blog.rawData[num].authorUrl;
-    this.publishedOn = blog.rawData[num].publishedOn;
-    this.body = blog.rawData[num].body;
+  function MakeAr(obj) {
+    this.title = obj.title;
+    this.category = obj.category;
+    this.author = obj.author;
+    this.authorUrl = obj.authorUrl;
+    this.publishedOn = obj.publishedOn;
+    this.body = obj.body;
     this.timeStamp = parseInt((new Date() - new Date(this.publishedOn))/1000/60/60/24);
     if (this.timeStamp === 1) {
       this.daysAgo = this.timeStamp + ' day ago';
@@ -83,9 +127,11 @@ $(function() {
   //-------------Populating functions-----------
 
   function constructObjs() {
-    for (var i = 0; i < blog.rawData.length; i++) {
-      articleArray[i] = new MakeAr(i);
+    for (var i = 0; i < blogData.length; i++) {
+      newArticleArray[i] = new MakeAr(blogData[i]);
     }
+    // var articlesToStorage = JSON.stringify(articleArray);
+    // localStorage.setItem('articles', articlesToStorage);
   }
 
 //populate both filter dropdown menus
@@ -93,11 +139,11 @@ $(function() {
     var tempCatArray = [];
     var uniqueCatArray = [];
 
-    articleArray.sort(byCategory);
+    newArticleArray.sort(byCategory);
     $('#catSelect').append('<option value="default">-Filter by Category-</option');
     $('#catSelect').append('<option value="all">All</option');
-    for (var i = 0; i < articleArray.length; i++) {
-      tempCatArray[i] = articleArray[i].category;
+    for (var i = 0; i < newArticleArray.length; i++) {
+      tempCatArray[i] = newArticleArray[i].category;
     }
     uniqueCatArray = jQuery.unique(tempCatArray);
 
@@ -107,21 +153,21 @@ $(function() {
     articleArray.sort(byAuthor);
     $('#authSelect').append('<option value="default">-Filter by Author-</option');
     $('#authSelect').append('<option value="all">All</option');
-    for (i = 0; i < articleArray.length; i++) {
-      $('#authFilter').find('select').append('<option value="' + articleArray[i].author + '">' + articleArray[i].author + '</option>');
+    for (i = 0; i < newArticleArray.length; i++) {
+      $('#authFilter').find('select').append('<option value="' + newArticleArray[i].author + '">' + newArticleArray[i].author + '</option>');
     }
   }
 
   //-----------Executives----------------
+  ajaxify();
+  // constructObjs();
+  // popFilters();
 
-  constructObjs();
-  popFilters();
-  sendAllToDom();
+  // sendAllToDom();
 
 
 
 //-------------Event Handling--------------
-
 //about me tab
   $('#aboutTab').on('click', function(e) {
     e.preventDefault();

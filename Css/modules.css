@@ -59,14 +59,17 @@
 }
 
 .block {
-  border: 1px solid grey;
+  /*border: 1px solid grey;*/
   padding: 20px;
   margin-bottom: 20px;
 }
 
-.textBox p{
+.textBox {
+  padding: 15px;
   white-space: normal;
   display: inline-block;
+  border: 1px solid grey;
+  width: 100%;
 }
 
 @media screen and (min-width: 650px) {

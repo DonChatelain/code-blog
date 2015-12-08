@@ -11,6 +11,8 @@
   <link rel="stylesheet" type="text/css" href="Css/modules.css" />
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="Js/highlight/styles/default.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.min.js" charset="utf-8"></script>
+
 </head>
 <body>
 
@@ -35,44 +37,30 @@
       maxlength="60" required />
       </label>
 
-      <button id="savePostAttributes" class="defaultbutton"
-      value="Save">save</button>
+      <button id="savePostAttributes" value="save">save</button>
 
     </fieldset>
 
     <h4>Post Body</h4>
 
-    <textarea id="postBodyAttribute" class="textBox" rows="20" cols="60">
+    <textarea id="postBody" class="textBox" rows="20" cols="60">
 
-# Title
-## subtitle
-dkajfdlk aldkfa dlkd dka dld fal df adkfj a fkda dad a a dakldfkja fjalkd fal f
-akd faldkfj afjalkdkjfjaldkfjaldkfjaldkjfa
-kd akdjfadkfjadkf akdfja df a
-dkakdjf akd  sla dkf ald aldkf ald dkd dajd d akd  kdjd d d d ajd fahkjdf  adjfa akfj fakjhdf akjfh aa <br>
-    <a href='touche'>CLICK ME</a>
 
     </textarea>
 
     <section class="block">
-      <h3>Marked Down</h3>
-      <pre><code>
-        <p id="postOutput" class="textBox"> </p>
-      </code></pre>
+      <h3>Post Preview</h3>
+      <div id="postOutput" class="textBox"></div>
     </section>
 
     <section class="block">
-      <h3>Raw HTML Output</h3>
-      <pre><code class=html>
-        <p id="rawHTML" class="textBox"></p>
-      </code></pre>
+      <h3>HTML Output</h3>
+      <p id="rawHTML" class="textBox"></p>
     </section>
 
     <section class="block">
-      <h3>JSON </h3>
-      <pre><code>
-        <p id="jsonOutput" class="textBox"></p>
-      </code></pre>
+      <h3>JSON</h3>
+      <p id="jsonOutput" class="textBox"></p>
     </section>
 
     <button id="submitNewPostButton">CREATE POST</button>

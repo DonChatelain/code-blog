@@ -28,16 +28,34 @@ $(function() {
   }
 //DOM cloning + populating
   function sendAllToDom() {
-    var entryTemplate = $('#articleTemplate').html();
-    var compiledTemplate = Handlebars.compile(entryTemplate);
 
-    for (var i = 0; i < articleArray.length; i++) {
-      var html = compiledTemplate(articleArray[i]);
-      $('#allArticles').append(html);
-    }
+    articleArray.sort(byDate);
+
+    $.get('articleTemplate.handlebars', function(data) {
+      for (var i = 0; i < articleArray.length; i++) {
+        var compiled = Handlebars.compile(data);
+        var html = compiled(articleArray[i]);
+        $('#allArticles').append(html);
+      }
+      hideFullBody();
+      $('.showMoreButton').on('click', function() {
+        var $scrollHere = $(this).parent().position().top;
+        if ($(this).text() === 'Read On') {
+          $(this).prev().find('p:not(:first)').toggle();
+          $(this).text('Show Less');
+        } else {
+          $(window).scrollTop($scrollHere);
+          $(this).prev().find('p:not(:first)').toggle();
+          $(this).text('Read On');
+        }
+      });
+    });
+
+  }
+
+  function hideFullBody() {
     $('.blogEntry').find('.entryBody p').hide();
     $('.blogEntry').find('.entryBody p:first-child').show();
-    console.log();
   }
 
 //--------Sorting Options------------------------
@@ -69,10 +87,7 @@ $(function() {
       articleArray[i] = new MakeAr(i);
     }
   }
-  function sortObjs() {
-    constructObjs();
-    articleArray.sort(byDate);
-  }
+
 //populate both filter dropdown menus
   function popFilters() {
     var tempCatArray = [];
@@ -99,24 +114,14 @@ $(function() {
 
   //-----------Executives----------------
 
-  sortObjs();
-  sendAllToDom();
+  constructObjs();
   popFilters();
+  sendAllToDom();
+
+
 
 //-------------Event Handling--------------
 
-//readon button
-  $('.showMoreButton').on('click', function() {
-    var $scrollHere = $(this).parent().position().top;
-    if ($(this).text() === 'Read On') {
-      $(this).prev().find('p:not(:first)').toggle();
-      $(this).text('Show Less');
-    } else {
-      $(window).scrollTop($scrollHere);
-      $(this).prev().find('p:not(:first)').toggle();
-      $(this).text('Read On');
-    }
-  });
 //about me tab
   $('#aboutTab').on('click', function(e) {
     e.preventDefault();

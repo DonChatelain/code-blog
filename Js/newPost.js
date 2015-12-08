@@ -1,59 +1,44 @@
 $(function() {
 
+    var $pTitle = $('#titleInput');
+    var $pAuthor = $('#authorInput');
+    var $pCategory = $('#categoryInput');
+    var $pBody = $('#postBody');
 
+    function render() {
+        var newPost = {};
+        var markDownOutput = marked($pBody.val());
+        var today = new Date();
 
-    var postNew = (function() {
+        newPost.title = $pTitle.val();
+        newPost.author = $pAuthor.val();
+        newPost.category = $pCategory.val();
+        newPost.body = markDownOutput;
+        newPost.publishedOn = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        newPost.timeStamp = parseInt((new Date() - new Date(newPost.publishedOn))/1000/60/60/24);
+        if (newPost.timeStamp === 1) {
+          newPost.daysAgo = newPost.timeStamp + ' day ago';
+        } else if (newPost.timeStamp === 0) {
+          newPost.daysAgo = 'today';
+        } else {
+          newPost.daysAgo = newPost.timeStamp + ' days ago';
+        }
 
-        var my = {};
+        $.get('articleTemplate.handlebars', function(data) {
+            var compiled = Handlebars.compile(data);
+            var preview = compiled(newPost);
+            $('#postOutput').html(preview);
+        });
 
-        var $postBodyAttribute = $('#postBodyAttribute');
-        var $rawHTML = $('#rawHTML');
-        var $output = $('#postOutput');
-        var $jsonOutput = $('#jsonOutput');
-        var markdownObject = {};
+        $('#rawHTML').text(newPost.body);
+        $('#jsonOutput').text(JSON.stringify(newPost));
+    }
 
-    //converts date string format to conform to existing blog.rawData
-        my.pad = function(num, size) {
-        var s = num+"";
-        while (s.length < size) s = "0" + s;
-        return s;
-        };
+    $pTitle.on('input', render);
+    $pAuthor.on('input', render);
+    $pCategory.on('input', render);
+    $pBody.on('input', render);
 
-        my.render = function() {
+    render();
 
-        	var postBodyAttribute = $postBodyAttribute.val();
-        	my.markdown = marked(postBodyAttribute);
-        	$rawHTML.text(my.markdown);
-        	$output.html(my.markdown);
-        	markdownObject.body = my.markdown;
-            var jsonSaved = JSON.stringify(markdownObject);
-        	$jsonOutput.text(jsonSaved);
-
-            // localStorage.setItem('draftPost' , jsonSaved);
-
-        };
-
-        my.getInput = function() {
-        	markdownObject.title = $('#titleInput').val();
-        	markdownObject.author = $('#authorInput').val();
-        	markdownObject.category = $('#categoryInput').val();
-        	var date = new Date();
-        	markdownObject.publishedOn = date.getFullYear() + "-" + my.pad( date.getMonth() + 1, 2 ) + "-" + my.pad(date.getDate(), 2);
-        	my.render();
-        };
-
-        $postBodyAttribute.on('input', my.render);
-
-        my.render();
-
-        return my;
-    })();
-
-    $('#savePostAttributes').on('click', function() {
-        postNew.getInput();
-    });
-
-    $('#submitNewPostButton').on('click', function() {
-        localStorage.clear();
-    });
 });

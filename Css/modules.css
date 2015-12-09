@@ -25,6 +25,24 @@
   display: block;
 }
 
+#authorList {
+
+  width:760px;
+  margin-bottom:20px;
+  overflow:hidden;
+  border-top:1px solid #ccc;
+}
+#authorList li {
+  width: 50%;
+  line-height:1.5em;
+  border-bottom:1px solid #ccc;
+  float:left;
+  display:inline;
+}
+span {
+  font-weight: bold;
+}
+
 .filterContain {
   text-align: center;
 }

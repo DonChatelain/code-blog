@@ -28,7 +28,7 @@ $(function() {
             get_template();
           }
         } else {
-          console.log('no local tag, lets json bitch');
+          console.log('no local tag');
           get_json(eTag);
         }
       } //end success function

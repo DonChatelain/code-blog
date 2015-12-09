@@ -1,0 +1,107 @@
+
+#pageTitle {
+  margin: 0 auto;
+  width: 100px;
+  border: 2px solid black;
+  text-align: left;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#subTitle {
+  font-size: 1.7em;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+#aboutMe {
+  display: none;
+  border: 1px solid black;
+  padding: 20px;
+  margin: 20px auto;
+}
+
+#savePostAttributes {
+  display: block;
+}
+
+#authorList {
+
+  width:760px;
+  margin-bottom:20px;
+  overflow:hidden;
+  border-top:1px solid #ccc;
+}
+#authorList li {
+  width: 50%;
+  line-height:1.5em;
+  border-bottom:1px solid #ccc;
+  float:left;
+  display:inline;
+}
+span {
+  font-weight: bold;
+}
+
+.filterContain {
+  text-align: center;
+}
+
+.filter {
+  font-size: 1.5em;
+  height: 50px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.entryTitle {
+  font-size: 2em;
+  padding-left: 15px;
+}
+
+.byLine {
+  padding-left: 30px;
+  margin-bottom: 0;
+}
+
+.authLine {
+  text-decoration: none;
+}
+.catLine {
+  padding-left: 30px;
+  padding-bottom: 20px;
+}
+
+.entryBody p {
+  text-indent: 10%;
+}
+
+.block {
+  /*border: 1px solid grey;*/
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.textBox {
+  padding: 15px;
+  white-space: normal;
+  display: inline-block;
+  border: 1px solid grey;
+  width: 100%;
+}
+
+@media screen and (min-width: 650px) {
+
+  #pageTitle {
+    width: 130px;
+  }
+  #subTitle {
+    font-size: 2em;
+  }
+  .filter {
+    font-size: 1.2em;
+    height: 40px;
+    width: 40%;
+  }
+
+}

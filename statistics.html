@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page Stats</title>
+    <link rel="stylesheet" type="text/css" href="Css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="Css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="Css/base.css" />
+    <link rel="stylesheet" type="text/css" href="Css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="Css/modules.css" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h3 id="pageTitle">Blog Statistics</h3>
+        <!-- <h4 id="subTitle">The Hard </h4> -->
+      </header>
+
+      <section id="statsContain">
+        <article>
+          <h5>Total Number of Blog Posts</h5>
+          <p id="totalPosts"></p>
+          <h5>Total Contributing Authors</h5>
+          <p id="totalAuthors"></p>
+          <h5>Total Word Count</h5>
+          <p id="totalWords"></p>
+          <h5>Average Word Length</h5>
+          <p id="avgWords"></p>
+        </article>
+        <article>
+          <h4>Authors' Average Word Length</h4>
+          <ul id="authorList">
+          </ul>
+          <select id="authSelect">
+          </select>
+        </article>
+      </section>
+    </main>
+    <script src="Js/marked.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="Js/stats.js"></script>
+
+  </body>
+</html>

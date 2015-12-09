@@ -28,19 +28,9 @@ $(function() {
     return results;
   }
   function count_words(data) {
-    var bodies = [];
     var words = [];
-    var separatedBodies = [];
     data.forEach(function(article) {
-      bodies.push(article.body);
-    });
-    bodies.forEach(function(body) {
-      separatedBodies.push(body.split(/\s+/));
-    });
-    separatedBodies.forEach(function(item) {
-      item.forEach(function(word) {
-        words.push(word);
-      });
+      words = words.concat(article.body.split(/\s+/));
     });
     return words;
   }
@@ -85,16 +75,6 @@ $(function() {
 
   blog_stat_module.showAllAuthors();
   blog_stat_module.popStats();
-
-  // function popAuthorFilter() {
-  //   var authorArray = get_unique_properties(localBlogData(), 'author');
-  //   authorArray.forEach(function(person) {
-  //     $('#authSelect').append('<option value="' + person + '">' + person + '</option>');
-
-  //   });
-
-
-
 
 });
 

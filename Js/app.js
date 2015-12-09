@@ -15,13 +15,15 @@ $(function() {
       success: function(data, status, xhr) {
         console.log('blogArticles.json successfully retrieved');
         var eTag = xhr.getResponseHeader('eTag');
-        console.log('got etag: ' + eTag);
-        var localEtag  = localStorage.getItem('ergodicEtag');
+        console.log('got server etag: ' + eTag);
+        var localEtag  = localStorage.getItem('localEtag');
+        console.log('got local etag: ' + localEtag);
         if (localEtag) {
           console.log('theres a local etag');
           if (localEtag != eTag) {
             console.log('etags dont match');
             get_json(eTag);
+            get_template();
           } else {
             console.log('etags match!');
             getLocal_Contruct();
@@ -30,6 +32,7 @@ $(function() {
         } else {
           console.log('no local tag');
           get_json(eTag);
+          get_template();
         }
       } //end success function
     }); //end ajax function
@@ -45,10 +48,12 @@ $(function() {
   }
 
   function get_json(placeHolderEtag) {
-
+    console.log('get_json start');
     $.getJSON('blogArticles.JSON', function(data){
+      console.log('success');
       localStorage.setItem('blogData', JSON.stringify(data));
-      localStorage.setItem('ergodicEtag', placeHolderEtag);
+      localStorage.setItem('localEtag', placeHolderEtag);
+      console.log("sent etag to local: " + placeHolderEtag);
       var rawblogData = localStorage.getItem('blogData');
       var blogData = JSON.parse(rawblogData);
       console.log(blogData.length);
@@ -56,7 +61,7 @@ $(function() {
         newArticleArray[i] = new MakeAr(blogData[i]);
       }
       console.log('objects created', newArticleArray.length);
-      get_template();
+
     });
   }
 
@@ -65,28 +70,6 @@ $(function() {
     popFilters();
 
     newArticleArray.sort(byDate);
-    $.get('articleTemplate.handlebars', function(data) {
-      for (var i = 0; i < newArticleArray.length; i++) {
-        var compiled = Handlebars.compile(data);
-        var html = compiled(newArticleArray[i]);
-        $('#allArticles').append(html);
-      }
-      hideFullBody();
-      $('.showMoreButton').on('click', function() {
-        var $scrollHere = $(this).parent().position().top;
-        if ($(this).text() === 'Read On') {
-          $(this).prev().find('p:not(:first)').toggle();
-          $(this).text('Show Less');
-        } else {
-          $(window).scrollTop($scrollHere);
-          $(this).prev().find('p:not(:first)').toggle();
-          $(this).text('Read On');
-        }
-      });
-    });
-  }
-
-  function handbarAppend() {
     $.get('articleTemplate.handlebars', function(data) {
       for (var i = 0; i < newArticleArray.length; i++) {
         var compiled = Handlebars.compile(data);

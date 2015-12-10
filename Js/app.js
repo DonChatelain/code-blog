@@ -44,7 +44,8 @@ $(function() {
     // console.log('newArticleArray populated: ' + newArticleArray[200].title);
     for (var i = 0; newArticleArray.length; i++) {
       webDB.execute(
-        'INSERT INTO blog_table2 VALUES('+ i + ',"' + newArticleArray[i].title + '","' + newArticleArray[i].category + '","' + newArticleArray[i].author + '");'
+        'INSERT INTO blog_table2 VALUES('+ i + ',"' + newArticleArray[i].title + '","' + newArticleArray[i].category + '","' + newArticleArray[i].author + '")
+        ;'
         ,function() {
           // console.log('success in inserting: ' + newArticleArray[i].title);
         },

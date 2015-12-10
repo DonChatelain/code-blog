@@ -8,6 +8,57 @@ $(function() {
 
   var newArticleArray = [];
 
+
+
+  function setupTable() {
+
+    webDB.init();
+    webDB.execute(
+      ['CREATE TABLE IF NOT EXISTS blog_table2 (id INT, title varchar(255), category varchar(255), author varchar(255));']
+      ,
+      //success callback
+      function() {
+        console.log('successfully called back baby');
+      },
+      //error callback
+      function(error) {
+        console.log('something went wrong I think');
+      }
+    );
+  }
+
+  function popTableTry() {
+    webDB.execute(
+      'INSERT INTO blog_table2 VALUES(1, "' + newArticleArray[0].title + '","' + newArticleArray[0].category + '","' + newArticleArray[0].author + '");'
+      ,
+      function() {
+        console.log('successfully inserted row');
+      },
+      function() {
+        console.log('you suck at life');
+      }
+    );
+  }
+
+  function popTable() {
+    // console.log('newArticleArray populated: ' + newArticleArray[200].title);
+    for (var i = 0; newArticleArray.length; i++) {
+      webDB.execute(
+        'INSERT INTO blog_table2 VALUES('+ i + ',"' + newArticleArray[i].title + '","' + newArticleArray[i].category + '","' + newArticleArray[i].author + '");'
+        ,function() {
+          // console.log('success in inserting: ' + newArticleArray[i].title);
+        },
+        function(error) {
+          console.log('fail on inserting: '+ newArticleArray[i].title);
+        }
+      );
+    }
+  }
+
+  setupTable();
+
+
+
   function get_ajax() {
     $.ajax({
       type: 'HEAD',
@@ -27,6 +78,7 @@ $(function() {
           } else {
             console.log('etags match!');
             getLocal_Contruct();
+            popTable();
             get_template();
           }
         } else {
@@ -169,6 +221,7 @@ $(function() {
   //-----------Executives----------------
 
   get_ajax();
+
 
 //-------------Event Handling--------------
 

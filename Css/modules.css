@@ -90,6 +90,14 @@ span {
   width: 100%;
 }
 
+.nextArticles {
+  width: 220px;
+  height: 70px;
+  display: block;
+  margin-bottom: 50px;
+  float: left;
+}
+
 @media screen and (min-width: 650px) {
 
   #pageTitle {

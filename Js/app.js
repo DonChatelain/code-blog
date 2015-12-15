@@ -10,7 +10,7 @@ $(function() {
   webDB.init();
   blog.get_ajax();
 
-//needs to run on load - everytime
+
 
 
   //run only if needs updating

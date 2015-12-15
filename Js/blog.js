@@ -15,7 +15,6 @@ blog.get_ajax = function() {
           blog.main();
         } else {
           blog.main();
-          // blog.filter();
         }
       } else {
         blog.get_json(eTag);
@@ -61,6 +60,7 @@ blog.getLocal_Contruct = function() {
   });
 };
 
+//populates main section with first 20 articles from DB by most recent
 blog.getDB_contruct = function() {
   html5sql.process(
     ['SELECT * FROM articles ORDER BY publishedOn DESC LIMIT 20;'],
@@ -71,13 +71,6 @@ blog.getDB_contruct = function() {
       blog.popSelectFilter();
       blog.useTemplate(newArticleArray);
     }
-  );
-};
-
-//====================================BROKEN SORRY
-blog.showNext = function() {
-  html5sql.process(
-    ['SELECT * FROM articles ']
   );
 };
 
@@ -186,4 +179,15 @@ blog.main = function() {
   blog.setEventListeners();
   blog.getDB_contruct();
 
+};
+
+//--------------------END-----------------------END-----------------------------END
+
+
+
+//==BROKEN SORRY ****
+blog.showNext = function() {
+  html5sql.process(
+    ['SELECT * FROM articles ']
+  );
 };

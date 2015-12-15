@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="Css/base.css" />
     <link rel="stylesheet" type="text/css" href="Css/layout.css" />
     <link rel="stylesheet" type="text/css" href="Css/modules.css" />
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+<!--     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'> -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.min.js" charset="utf-8"></script>
@@ -33,20 +33,30 @@
         </section>
         <section class="filterContain">
           <form id="catFilter">
-            <select id="catSelect" class="filter"></select>
+            <select id="catSelect" class="filter">
+              <option value="default">-Filter by Category-</option>
+              <option value="all">All</option>
+            </select>
           </form>
           <form id="authFilter">
-            <select id="authSelect" class="filter"></select>
+            <select id="authSelect" class="filter">
+              <option value="default">-Filter by Author-</option>
+              <option value="all">All</option>
+            </select>
           </form>
         </section>
 
       </nav>
       <hr>
       <section id="allArticles"></section>
+      <button class="nextArticles">SHOW NEXT ARTICLES</button>
     </main>
-    <script src="Js/html5sql.js"></script>
-    <script src="Js/marked.min.js"></script>
-    <script src="Js/app.js"></script>
+    <script src="/Js/html5sql.js"></script>
+    <script src="/Js/webDB.js"></script>
+    <script src="/Js/marked.min.js"></script>\
+    <script src="/Js/util.js"></script>
+    <script src="/Js/blog.js"></script>
+    <script src="/Js/app.js"></script>
 
   </body>
 </html>

@@ -5,7 +5,7 @@ var newArticleArray = [];
 blog.get_ajax = function() {
   $.ajax({
     type: 'HEAD',
-    url: ('blogArticles.JSON'),
+    url: ('Data/blogArticles.JSON'),
     success: function(data, status, xhr) {
       var eTag = xhr.getResponseHeader('eTag');
       var localEtag  = localStorage.getItem('localEtag');
@@ -27,7 +27,7 @@ blog.get_ajax = function() {
 //manually fetches data from json file--- used when etags dont match
 //also updates local storage etag
 blog.get_json = function(placeHolderEtag) {
-  $.getJSON('blogArticles.JSON', function(data) {
+  $.getJSON('Data/blogArticles.JSON', function(data) {
     localStorage.setItem('blogData', JSON.stringify(data));
     localStorage.setItem('localEtag', placeHolderEtag);
   });
@@ -152,6 +152,10 @@ blog.setEventListeners = function() {
     var sel = $(this).val();
     $('article').remove();
     blog.anyFilter(sel, 'category');
+    if (sel == 'all' || sel == 'default') {
+      newArticleArray = [];
+      blog.getDB_contruct();
+    }
   });
   //author filter
   $('#authSelect').on('change', function(e) {
@@ -159,6 +163,10 @@ blog.setEventListeners = function() {
     var sel = $(this).val();
     $('article').remove();
     blog.anyFilter(sel, 'author');
+    if (sel == 'all' || sel == 'default') {
+      newArticleArray = [];
+      blog.getDB_contruct();
+    }
   });
   //Show more buttons-----Listening to parent and waiting for classes to be created---
   $('#allArticles').on('click', '.showMoreButton', function() {

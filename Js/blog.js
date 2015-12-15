@@ -63,7 +63,7 @@ blog.getLocal_Contruct = function() {
 
 blog.getDB_contruct = function() {
   html5sql.process(
-    ['SELECT * FROM articles LIMIT 10;'],
+    ['SELECT * FROM articles ORDER BY publishedOn DESC LIMIT 20;'],
     function(transaction, results, rowsArray) {
       rowsArray.forEach(function(row) {
         newArticleArray.push(new blog.BlogArticle(row));
@@ -74,9 +74,12 @@ blog.getDB_contruct = function() {
   );
 };
 
-
-
-
+//====================================BROKEN SORRY
+blog.showNext = function() {
+  html5sql.process(
+    ['SELECT * FROM articles ']
+  );
+};
 
 //apply items in input array to handlebars templater
 //also contains hide full body function
@@ -124,7 +127,6 @@ blog.popSelectFilter = function() {
       });
     }
   );
-
 };
 
 blog.anyFilter = function(selection, type) {

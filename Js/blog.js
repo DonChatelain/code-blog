@@ -15,7 +15,7 @@ blog.get_ajax = function() {
           blog.main();
         } else {
           blog.main();
-          blog.filter();
+          // blog.filter();
         }
       } else {
         blog.get_json(eTag);
@@ -127,6 +127,18 @@ blog.popSelectFilter = function() {
 
 };
 
+blog.anyFilter = function(selection, type) {
+  newArticleArray = [];
+  html5sql.process(
+    ["SELECT * FROM articles WHERE " + type + "='" + selection + "';"],
+    function(transaction, results, rowsArray) {
+      rowsArray.forEach(function(row) {
+        newArticleArray.push(new blog.BlogArticle(row));
+      });
+      blog.useTemplate(newArticleArray);
+  });
+};
+
 //buttons, etc
 blog.setEventListeners = function() {
   //about me tab
@@ -143,21 +155,15 @@ blog.setEventListeners = function() {
   $('#catSelect').on('change', function(e) {
     // e.preventDefault();
     var sel = $(this).val();
-    $('article').hide();
-    $(".catLine:contains('" + sel + "')").parents('article').show();
-    if (sel == 'all' || sel == 'default') {
-      $('article').show();
-    }
+    $('article').remove();
+    blog.anyFilter(sel, 'category');
   });
   //author filter
   $('#authSelect').on('change', function(e) {
     e.preventDefault();
     var sel = $(this).val();
-    $('article').hide();
-    $(".authLine:contains('" + sel + "')").parents('article').show();
-    if (sel == 'all' || sel == 'default') {
-      $('article').show();
-    }
+    $('article').remove();
+    blog.anyFilter(sel, 'author');
   });
   //Show more buttons-----Listening to parent and waiting for classes to be created---
   $('#allArticles').on('click', '.showMoreButton', function() {

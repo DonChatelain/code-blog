@@ -4,27 +4,35 @@
 //             CF301    //
 //888888888888888888888//
 
+page.base('/');
+
 $(function() {
 
+  page('/', router.init);
+  page('stats/', router.stats);
+  page('newpost', router.newPost);
+  page();
 
-  webDB.init();
-  blog.get_ajax();
+  $('.statsButton').on('click', function(e) {
+    page('/stats');
+    e.preventDefault();
+  });
 
+  $('.newPostButton').on('click', function(e) {
+    e.preventDefault();
+    page('/newpost');
+  });
 
-
-
-  //run only if needs updating
-  // webDB.setupTables();
-
-//***ONCE UPDATED, SEND NEW ARRAY DATA TO DB********
-//webDB.insertAllRecords(newArticleArray);
-
-
-//***JUST LIKE GET_JSON FUNCTION*************
-  // webDB.importArticlesFrom('blogArticles.JSON');
-
-
-
+  $('.articlesButton').on('click', function(e) {
+    e.preventDefault();
+    page('/');
+  });
 
 });
+
+
+
+
+
+
 

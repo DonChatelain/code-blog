@@ -4,27 +4,31 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Don's Blog</title>
-    <link rel="stylesheet" type="text/css" href="Css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="Css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="Css/base.css" />
-    <link rel="stylesheet" type="text/css" href="Css/layout.css" />
-    <link rel="stylesheet" type="text/css" href="Css/modules.css" />
+    <link rel="stylesheet" type="text/css" href="/Css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/Css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="/Css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/Css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="/Css/modules.css" />
 <!--     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'> -->
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.min.js" charset="utf-8"></script>
+    <base href="/">
   </head>
+
   <body>
-    <main>
+
+<!--==========================================================================INDEX PAGE============-->
+    <main id="indexPage">
       <header>
-        <h1 id="pageTitle">Don's Blog</h1>
-        <h4 id="subTitle">Ipsums, Thoughts, etcetera</h4>
+        <h1 class="pageTitle">Don's Blog</h1>
+        <h4 class="subTitle">Ipsums, Thoughts, etcetera</h4>
       </header>
       <nav>
         <ul>
-          <li><a href="https://github.com/DonChatelain">GitHub</a></li>
-          <li><a href="https://www.linkedin.com/in/dj-chatelain-01325140">LinkedIn</a></li>
-          <li><a id="aboutTab" href="#">About</a></li>
+          <li class="articlesButton">ARTICLES</li>
+          <li class="newPostButton">NEW POST</li>
+          <li class="statsButton">STATS</li>
+          <!-- <li id="aboutTab"> ABOUT</li> -->
         </ul>
         <section id="aboutMe">
           <h3>About Me</h3>
@@ -50,12 +54,100 @@
       <section id="allArticles"></section>
       <button class="nextArticles">SHOW NEXT ARTICLES</button>
     </main>
+
+<!--================================================================STATS PAGE============================-->
+    <main id="statsPage">
+      <header>
+        <h1 class="pageTitle">Blog Statistics</h1>
+        <h4 class="subTitle">The Stone Cold Facts</h4>
+      </header>
+       <nav>
+          <ul>
+            <li class="articlesButton">ARTICLES</li>
+            <li class="newPostButton">NEW POST</li>
+            <li class="statsButton">STATS</li>
+            <!-- <li id="aboutTab"> ABOUT</li> -->
+          </ul>
+        </nav>
+      <section id="statsContain">
+        <article>
+          <h5>Total Number of Blog Posts</h5>
+          <p id="totalPosts"></p>
+          <h5>Total Contributing Authors</h5>
+          <p id="totalAuthors"></p>
+          <h5>Total Word Count</h5>
+          <p id="totalWords"></p>
+          <h5>Average Word Length</h5>
+          <p id="avgWords"></p>
+        </article>
+        <article>
+          <h4>Authors' Average Word Length</h4>
+          <ul id="authorList">
+          </ul>
+          <select id="authSelect">
+          </select>
+        </article>
+      </section>
+    </main>
+
+  <!--===================================================================NEWPOST PAGE=============-->
+    <main id="newPostPage">
+      <header>
+        <h1 class="pageTitle">New Post</h1>
+        <h4 class="subTitle">Share your Thoughts!</h4>
+      </header>
+       <nav>
+          <ul>
+            <li class="articlesButton">ARTICLES</li>
+            <li class="newPostButton">NEW POST</li>
+            <li class="statsButton">STATS</li>
+            <!-- <li id="aboutTab"> ABOUT</li> -->
+          </ul>
+        </nav>
+      <fieldset id="postAttributes">
+        <label class="postTitleAttribute">Title:
+        <input id="titleInput" type="text" placeholder="title"
+        maxlength="60" required />
+        </label>
+        <label class="postAuthorAttribute">Author:
+        <input id="authorInput" type="text" placeholder="author"
+        maxlength="60" required />
+        </label>
+        <label class="postCategoryAttribute">Category:
+        <input id="categoryInput" type="text" placeholder="category"
+        maxlength="60" required />
+        </label>
+        <button id="savePostAttributes" value="save">save</button>
+      </fieldset>
+      <h4>Post Body</h4>
+      <textarea id="postBody" class="textBox" rows="20" cols="60">
+      </textarea>
+      <section class="block">
+        <h3>Post Preview</h3>
+        <div id="postOutput" class="textBox"></div>
+      </section>
+      <section class="block">
+        <h3>HTML Output</h3>
+        <p id="rawHTML" class="textBox"></p>
+      </section>
+      <section class="block">
+        <h3>JSON</h3>
+        <p id="jsonOutput" class="textBox"></p>
+      </section>
+      <button id="submitNewPostButton">CREATE POST</button>
+    </main>
+
+<!--==============================================================================-->
+
     <script src="/Js/html5sql.js"></script>
     <script src="/Js/webDB.js"></script>
     <script src="/Js/marked.min.js"></script>
     <script src="/Js/page.js"></script>
     <script src="/Js/util.js"></script>
     <script src="/Js/blog.js"></script>
+    <script src="/Js/router.js"></script>
+    <script src="/Js/stats.js"></script>
+    <script src="/Js/newPost.js"></script>
     <script src="/Js/app.js"></script>
 
   </body>

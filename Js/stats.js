@@ -1,18 +1,28 @@
-$(function() {
 
-  var blog_stat_module = {};
+
+  var stat_mod = {};
+
+  stat_mod.pulledArray = [];
 
   //=================================run only if eTags don't match!-----
   function localize_ajax_data() {
-    $.getJSON('blogArticles.JSON', function(data) {
+    $.getJSON('Data/blogArticles.json', function(data) {
       localStorage.setItem('rawBlogData', JSON.stringify(data));
-      console.log('blogArticles.json retrieved and stored in local');
     });
   }
 
   //=================================Main Data (LOCAL)
   function localBlogData() {
-    return JSON.parse(localStorage.getItem('rawBlogData'));
+    html5sql.process(
+      ['SELECT * FROM articles;'],
+      function(transaction, results, rowsArray) {
+        rowsArray.forEach(function(row) {
+          stat_mod.pulledArray.push(row);
+        });
+        stat_mod.showAllAuthors();
+        stat_mod.popStats();
+      }
+    );
   }
 
   // ================================Counting and Sorting functions
@@ -53,10 +63,10 @@ $(function() {
     };
   }
 
-  blog_stat_module.showAllAuthors = function() {
+  stat_mod.showAllAuthors = function() {
     var $list = $('#authorList');
-    var blogData = localBlogData();
-    var authorArray = get_unique_properties(localBlogData(), 'author');
+    var blogData = stat_mod.pulledArray;
+    var authorArray = get_unique_properties(blogData, 'author');
     var searchResult;
     var authorWords;
     authorArray.forEach(function(author) {
@@ -66,17 +76,16 @@ $(function() {
     });
   };
 
-  blog_stat_module.popStats = function() {
-    $('#totalPosts').text(count_articles(localBlogData()));
-    $('#totalAuthors').html(get_unique_properties(localBlogData(), 'author').length);
-    $('#totalWords').html(count_words(localBlogData()).length);
-    $('#avgWords').html(avg_word_length(count_words(localBlogData())).toFixed(2));
+  stat_mod.popStats = function() {
+    $('#totalPosts').text(count_articles(stat_mod.pulledArray));
+    $('#totalAuthors').html(get_unique_properties(stat_mod.pulledArray, 'author').length);
+    $('#totalWords').html(count_words(stat_mod.pulledArray).length);
+    $('#avgWords').html(avg_word_length(count_words(stat_mod.pulledArray)).toFixed(2));
   };
 
-  blog_stat_module.showAllAuthors();
-  blog_stat_module.popStats();
 
-});
+
+
 
 
 

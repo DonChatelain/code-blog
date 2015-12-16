@@ -11,12 +11,16 @@ blog.get_ajax = function() {
       var localEtag  = localStorage.getItem('localEtag');
       if (localEtag) {
         if (localEtag != eTag) {
-          blog.get_json(eTag);
+          console.log('etags dont match');
+          // blog.get_json(eTag);
           blog.main();
         } else {
+          console.log('etags match baby!');
+          // blog.get_json(eTag);
           blog.main();
         }
       } else {
+        console.log('no local etag');
         blog.get_json(eTag);
         blog.main();
       }
@@ -26,11 +30,15 @@ blog.get_ajax = function() {
 
 //manually fetches data from json file--- used when etags dont match
 //also updates local storage etag
-blog.get_json = function(placeHolderEtag) {
-  $.getJSON('Data/blogArticles.JSON', function(data) {
-    localStorage.setItem('blogData', JSON.stringify(data));
-    localStorage.setItem('localEtag', placeHolderEtag);
-  });
+blog.get_json = function(fakeEtag) {
+  html5sql.process(
+    ['DELETE FROM articles;'],
+    function() {
+      console.log('success in deleting table data');
+    }
+  );
+  webDB.importArticlesFrom('Data/blogArticles.json');
+  localStorage.setItem('localEtag', fakeEtag);
 };
 
 //Constructor to receive ext. data objects
@@ -63,7 +71,7 @@ blog.getLocal_Contruct = function() {
 //populates main section with first 20 articles from DB by most recent
 blog.getDB_contruct = function() {
   html5sql.process(
-    ['SELECT * FROM articles ORDER BY publishedOn DESC LIMIT 20;'],
+    ['SELECT * FROM articles ORDER BY publishedOn DESC LIMIT 10;'],
     function(transaction, results, rowsArray) {
       rowsArray.forEach(function(row) {
         newArticleArray.push(new blog.BlogArticle(row));
@@ -78,7 +86,7 @@ blog.getDB_contruct = function() {
 //also contains hide full body function
 blog.useTemplate = function(array) {
   array.sort(util.byDate);
-  $.get('articleTemplate.handlebars', function(data) {
+  $.get('articleTemplate.html', function(data) {
     array.forEach(function(article) {
       var templater = Handlebars.compile(data);
       var newHtml = templater(article);
@@ -194,8 +202,8 @@ blog.main = function() {
 
 
 //==BROKEN SORRY ****
-blog.showNext = function() {
-  html5sql.process(
-    ['SELECT * FROM articles ']
-  );
-};
+// blog.showNext = function() {
+//   html5sql.process(
+//     ['SELECT * FROM articles ']
+//   );
+// };

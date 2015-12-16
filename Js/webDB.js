@@ -41,6 +41,7 @@ webDB.connect = function (database, title, size) {
 webDB.importArticlesFrom = function (path) {
   // Import articles from JSON file
   $.getJSON(path, webDB.insertAllRecords);
+  console.log('should be done importing about now');
 };
 webDB.insertAllRecords = function (articles) {
   articles.forEach(webDB.insertRecord);
@@ -55,7 +56,10 @@ webDB.insertRecord = function (a) {
       }
     ],
     function () {
-      // console.log('Success inserting record for ' + a.title);
+      console.log('Success inserting record for ' + a.title);
+    },
+    function(error) {
+      console.log('failed: ' + error.message);
     }
   );
 };

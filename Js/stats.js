@@ -13,6 +13,7 @@
 
   //=================================Main Data (LOCAL)
   function localBlogData() {
+    stat_mod.pulledArray = [];
     html5sql.process(
       ['SELECT * FROM articles;'],
       function(transaction, results, rowsArray) {

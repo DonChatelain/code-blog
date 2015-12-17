@@ -1,5 +1,6 @@
 var router = {};
 var articlesPopulated = false;
+var statsPopulated = false;
 
 router.init = function() {
   $('#statsPage').hide();
@@ -14,7 +15,10 @@ router.init = function() {
 };
 
 router.stats = function() {
-  localBlogData();
+  if (statsPopulated === false) {
+    localBlogData();
+    statsPopulated = true;
+  }
   $('#statsPage').show();
   $('#newPostPage').hide();
   $('#indexPage').hide();

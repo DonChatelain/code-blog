@@ -9,18 +9,18 @@ page.base('/');
 $(function() {
 
   page('/', router.init);
-  page('stats/', router.stats);
+  page('stats', router.stats);
   page('newpost', router.newPost);
   page();
 
   $('.statsButton').on('click', function(e) {
-    page('/stats');
+    page('stats');
     e.preventDefault();
   });
 
   $('.newPostButton').on('click', function(e) {
     e.preventDefault();
-    page('/newpost');
+    page('newpost');
   });
 
   $('.articlesButton').on('click', function(e) {

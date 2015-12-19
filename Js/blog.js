@@ -1,22 +1,22 @@
 var blog = {};
 var newArticleArray = [];
+var currentPage = 25;
 
 //fetches eTag from json file and acts depending on if it matches
 blog.get_ajax = function() {
   $.ajax({
     type: 'HEAD',
-    url: ('Data/blogArticles.JSON'),
+    url: ('Data/blogArticles.json'),
     success: function(data, status, xhr) {
       var eTag = xhr.getResponseHeader('eTag');
       var localEtag  = localStorage.getItem('localEtag');
       if (localEtag) {
         if (localEtag != eTag) {
           console.log('etags dont match');
-          // blog.get_json(eTag);
+          blog.get_json(eTag);
           blog.main();
         } else {
           console.log('etags match baby!');
-          // blog.get_json(eTag);
           blog.main();
         }
       } else {
@@ -71,7 +71,7 @@ blog.getLocal_Contruct = function() {
 //populates main section with first 20 articles from DB by most recent
 blog.getDB_contruct = function() {
   html5sql.process(
-    ['SELECT * FROM articles ORDER BY publishedOn DESC LIMIT 10;'],
+    ['SELECT * FROM articles ORDER BY publishedOn DESC LIMIT 25;'],
     function(transaction, results, rowsArray) {
       rowsArray.forEach(function(row) {
         newArticleArray.push(new blog.BlogArticle(row));
@@ -188,6 +188,12 @@ blog.setEventListeners = function() {
       $(this).text('Read On');
     }
   });
+
+  $('.nextArticles').on('click', function() {
+    blog.showNext(currentPage);
+    currentPage += 25;
+  });
+
 };
 
 //contructing and populating functions wrapped up into one!
@@ -202,8 +208,16 @@ blog.main = function() {
 
 
 //==BROKEN SORRY ****
-// blog.showNext = function() {
-//   html5sql.process(
-//     ['SELECT * FROM articles ']
-//   );
-// };
+blog.showNext = function(num) {
+  newArticleArray = [];
+  html5sql.process(
+    ['SELECT * FROM articles ORDER BY publishedOn DESC LIMIT ' + num + ',25;'],
+    // ['SELECT * FROM articles ORDER BY publishedOn DESC LIMIT 20,10;'],
+    function(transaction, results, rowsArray) {
+      rowsArray.forEach(function(row) {
+        newArticleArray.push(new blog.BlogArticle(row));
+      });
+      blog.useTemplate(newArticleArray);
+    }
+  );
+};

@@ -1,12 +1,13 @@
 var router = {};
 var articlesPopulated = false;
+var statsPopulated = false;
 
 router.init = function() {
   $('#statsPage').hide();
   $('#newPostPage').hide();
   $('#indexPage').show();
   webDB.init();
-  // webDB.setupTables();
+  webDB.setupTables();
   if (articlesPopulated === false) {
     blog.get_ajax();
     articlesPopulated = true;
@@ -14,7 +15,10 @@ router.init = function() {
 };
 
 router.stats = function() {
-  localBlogData();
+  if (statsPopulated === false) {
+    localBlogData();
+    statsPopulated = true;
+  }
   $('#statsPage').show();
   $('#newPostPage').hide();
   $('#indexPage').hide();

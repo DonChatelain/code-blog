@@ -62,7 +62,8 @@ render();
 $('#submitNewPostButton').on('click', function() {
     webDB.insertRecord(newPost);
     articlesPopulated = false;
-    // localStorage.removeItem('newPost');
+    localStorage.removeItem('newPost');
+    location.reload();
 });
 
 

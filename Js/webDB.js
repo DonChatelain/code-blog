@@ -44,6 +44,7 @@ webDB.importArticlesFrom = function (path) {
   console.log('should be done importing about now');
 };
 webDB.insertAllRecords = function (articles) {
+  articles.sort(util.byDate);
   articles.forEach(webDB.insertRecord);
 };
 webDB.insertRecord = function (a) {

@@ -13,11 +13,10 @@ blog.get_ajax = function() {
       if (localEtag) {
         if (localEtag != eTag) {
           console.log('etags dont match');
-          // blog.get_json(eTag);
+          blog.get_json(eTag);
           blog.main();
         } else {
           console.log('etags match baby!');
-          // blog.get_json(eTag);
           blog.main();
         }
       } else {

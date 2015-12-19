@@ -7,7 +7,7 @@ router.init = function() {
   $('#newPostPage').hide();
   $('#indexPage').show();
   webDB.init();
-  // webDB.setupTables();
+  webDB.setupTables();
   if (articlesPopulated === false) {
     blog.get_ajax();
     articlesPopulated = true;
